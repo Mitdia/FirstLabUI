@@ -1,0 +1,89 @@
+﻿<Window x:Class="WpfFirstLabUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfFirstLabUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <local:StringToDoubleArrayConverter x:Key="StringToDoubleArrayConverter" />
+        <local:IsNonuniformToBoolConverter x:Key="IsNonuniformToBoolConverter" />
+        <local:IntegralValueConverter x:Key="IntegralValueConverter" />
+        <DataTemplate x:Key="splineDataItemTemplate">
+            <StackPanel Margin="5, 5, 5, 5">
+                <TextBlock Text="Spline data item:"/>
+                <TextBlock>
+                    <Run Text="- coordinate: "/>
+                    <Run Text="{Binding Path=PointCoordinate}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="- spline value: "/>
+                    <Run Text="{Binding Path=SplineValue}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="- first derivative value: "/>
+                    <Run Text="{Binding Path=FirstDerivativeValue}"/>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="rawDataItemTemplate">
+            <StackPanel Margin="5, 5, 5, 5">
+                <TextBlock Text="Raw data item:"/>
+                <TextBlock>
+                    <Run Text="- force value: "/>
+                    <Run Text="{Binding Path=ToString}"/>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="20*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Margin="0,30,0,0" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="segmentEndsInput" Grid.Row="1" Margin="110,50,0,0" TextWrapping="Wrap" Text="{Binding Path=SegmentEnds, Converter={StaticResource StringToDoubleArrayConverter}, Mode=TwoWay}" VerticalAlignment="Top" Width="100" Height="20" HorizontalAlignment="Center"/>
+            <TextBox x:Name="numberOfInitialPointsInput" HorizontalAlignment="Center" Grid.Row="1" Margin="40,80,0,0" TextWrapping="Wrap" Text="{Binding Path=NumberOfInitialPoints}" VerticalAlignment="Top" Width="30" Height="20"/>
+            <RadioButton x:Name="isUniformButton" Content="Uniform Grid" IsChecked="{Binding Path=IsGridUniform}" HorizontalAlignment="Left" Grid.Row="1" Margin="90,120,0,0" VerticalAlignment="Top" Width="90" Height="20"/>
+            <RadioButton x:Name="isNonuniformButton" Content="Nonuniform Grid" IsChecked="{Binding Path=IsGridUniform, Converter={StaticResource IsNonuniformToBoolConverter}, Mode=TwoWay}" HorizontalAlignment="Left" Grid.Row="1" Margin="200,120,0,0" VerticalAlignment="Top" Height="20" Width="110"/>
+            <ComboBox x:Name="forceInput" SelectedItem="{Binding Path=ForceName}" HorizontalAlignment="Center" Grid.Row="1" Margin="0,160,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+            <TextBox x:Name="numberOfSplinePointsInput" HorizontalAlignment="Left" Margin="220,70,0,0" TextWrapping="Wrap" Text="{Binding Path=NumberOfPoints}" Width="100" Height="20" VerticalAlignment="Top"/>
+            <TextBox x:Name="derivativeOnLeftSide" HorizontalAlignment="Left" Margin="130,112,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Height="20" Text="{Binding Path=FirstDerivativeOnLeftSegmentEnd}"/>
+            <TextBox x:Name="derivativeOnRightSide" HorizontalAlignment="Left" Margin="305,112,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="30" Height="20" Text="{Binding Path=FirstDerivativeOnRightSegmentEnd}"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,30,0,0"  TextWrapping="Wrap" Text="Spline data input" VerticalAlignment="Top" Height="20" Width="200" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,15,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Raw data input" VerticalAlignment="Top" Height="20" Width="200" TextAlignment="Center" FontSize="15" FontWeight="Bold"/>
+            <TextBlock HorizontalAlignment="Left" Margin="50,70,0,0" TextWrapping="Wrap" Text="Number of points in spline:" VerticalAlignment="Top" Height="20" Width="150"/>
+            <TextBlock HorizontalAlignment="Left" Margin="25,100,0,0" TextWrapping="Wrap" Text="First derivative value on left end:" VerticalAlignment="Top" Width="100" Height="32"/>
+            <TextBlock HorizontalAlignment="Left" Margin="200,100,0,0" TextWrapping="Wrap" Text="First derivative value on right end:" VerticalAlignment="Top" Width="100" Height="32"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,50,80,0" Grid.Row="1" TextWrapping="Wrap" Text="Segment ends:" VerticalAlignment="Top" Width="80" Height="20"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,80,130,0" Grid.Row="1" TextWrapping="Wrap" Text="Number of initial points:" VerticalAlignment="Top" Height="20" Width="130"/>
+        </Grid>
+        <ListBox x:Name="rawDataListBox" Grid.Column="1" Margin="25,125,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="160" Grid.Row="1"/>
+        <ListBox x:Name="splineDataListBox" Grid.Column="1" d:ItemsSource="{Binding Path=SplineValues}" Margin="155,80,0,0" Width="220" Height="160" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource splineDataItemTemplate}" Grid.Row="1"/>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=splineDataListBox, Path=SelectedItem}" VerticalAlignment="Top" Height="80" Width="220" Margin="155,245,0,0" Grid.Row="1"/>
+        <TextBlock x:Name="integralOutput" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,340,0,0" Width="126" Height="20" Grid.Row="1">
+            <Run Text="Integral value:"/>
+            <Run Text="{Binding Path=IntegralValue, Converter={StaticResource IntegralValueConverter}}"/>
+        </TextBlock>
+        <Button x:Name="executeFromFileButton" Grid.Column="1" Content="Execute from file" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,0,0" Click="executeFromFileButton_Click" Grid.Row="1"/>
+        <Button x:Name="saveButton" Grid.Column="1" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,250,0" Click="saveButton_Click" Grid.Row="1"/>
+        <Button x:Name="executeFromControlsButton" Grid.Column="1" Content="Execute from data" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="250,10,0,0" Click="executeFromControlsButton_Click" Grid.Row="1"/>
+        <Menu>
+            <MenuItem Header="Save" Click="saveButton_Click"/>
+            <MenuItem Header="Execute">
+                <MenuItem Header="Execute from file" Click="executeFromFileButton_Click"/>
+                <MenuItem Header="Execute from data" Click="executeFromControlsButton_Click"/>
+            </MenuItem>
+        </Menu>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="25,80,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Raw data force values:" VerticalAlignment="Top" Width="100"/>
+    </Grid>
+</Window>
