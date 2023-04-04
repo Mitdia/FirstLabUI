@@ -146,7 +146,7 @@ namespace WpfFirstLabUI
         public int NumberOfPoints { get; set; }
         public double FirstDerivativeOnLeftSegmentEnd { get; set; }
         public double FirstDerivativeOnRightSegmentEnd { get; set; }
-        public ObservableCollection<double>? ForceValues { get; set; }
+        public ObservableCollection<RawDataItem>? ForceValues { get; set; }
         public ObservableCollection<SplineDataItem>? SplineValues { get; set; }
         public double? IntegralValue 
         { 
@@ -179,12 +179,12 @@ namespace WpfFirstLabUI
         {
 
             RawDataSource.ComputeRawData();
-            if (RawDataSource.ForceValues == null)
+            if (RawDataSource.RawDataItems == null)
             {
-                MessageBox.Show("Error! Computation of a RawData failed.");
+                // MessageBox.Show("Error! Computation of a RawData failed.");
                 throw new Exception("Raw Data field is null or field Values haven't been initialized correctly");
             }
-            ForceValues = new ObservableCollection<double>(RawDataSource.ForceValues);
+            ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
         }
         public void Interpolate()
         {
@@ -225,11 +225,11 @@ namespace WpfFirstLabUI
         public void Load(string filename)
         {
             RawDataSource = new RawData(filename);
-            if (RawDataSource.ForceValues == null)
+            if (RawDataSource.RawDataItems == null)
             {
                 throw new Exception("The loaded raw data has no Force Values array");
             }
-            ForceValues = new ObservableCollection<double>(RawDataSource.ForceValues);
+            ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
         }
     }
     public partial class MainWindow : Window

@@ -31,8 +31,12 @@
             <StackPanel Margin="5, 5, 5, 5">
                 <TextBlock Text="Raw data item:"/>
                 <TextBlock>
+                    <Run Text="- coordinate: "/>
+                    <Run Text="{Binding Path=Coordinate}"/>
+                </TextBlock>
+                <TextBlock>
                     <Run Text="- force value: "/>
-                    <Run Text="{Binding Path=ToString}"/>
+                    <Run Text="{Binding Path=Force}"/>
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -67,7 +71,7 @@
             <TextBlock HorizontalAlignment="Center" Margin="0,50,80,0" Grid.Row="1" TextWrapping="Wrap" Text="Segment ends:" VerticalAlignment="Top" Width="80" Height="20"/>
             <TextBlock HorizontalAlignment="Center" Margin="0,80,130,0" Grid.Row="1" TextWrapping="Wrap" Text="Number of initial points:" VerticalAlignment="Top" Height="20" Width="130"/>
         </Grid>
-        <ListBox x:Name="rawDataListBox" Grid.Column="1" Margin="25,125,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="160" Grid.Row="1"/>
+        <ListBox x:Name="rawDataListBox" Grid.Column="1" Margin="10,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="125" Height="160" Grid.Row="1" ItemTemplate="{StaticResource rawDataItemTemplate}"/>
         <ListBox x:Name="splineDataListBox" Grid.Column="1" d:ItemsSource="{Binding Path=SplineValues}" Margin="155,80,0,0" Width="220" Height="160" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource splineDataItemTemplate}" Grid.Row="1"/>
         <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=splineDataListBox, Path=SelectedItem}" VerticalAlignment="Top" Height="80" Width="220" Margin="155,245,0,0" Grid.Row="1"/>
         <TextBlock x:Name="integralOutput" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,340,0,0" Width="126" Height="20" Grid.Row="1">
@@ -84,6 +88,5 @@
                 <MenuItem Header="Execute from data" Click="executeFromControlsButton_Click"/>
             </MenuItem>
         </Menu>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="25,80,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Raw data force values:" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>
