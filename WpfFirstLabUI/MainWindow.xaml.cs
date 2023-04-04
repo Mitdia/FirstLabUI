@@ -30,7 +30,7 @@ namespace WpfFirstLabUI
         {
             if (value is double[] doubleArray)
             {
-                string stringValue = string.Join(",", doubleArray);
+                string stringValue = string.Join(";", doubleArray);
 
                 return stringValue;
             }
@@ -50,7 +50,7 @@ namespace WpfFirstLabUI
                 }
                 if (stringValue != null)
                 {
-                    values = stringValue.Split(',');
+                    values = stringValue.Split(';');
                 }
                 else
                 {
