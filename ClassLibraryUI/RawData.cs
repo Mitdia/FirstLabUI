@@ -31,6 +31,16 @@ namespace ClassLibraryUI
     public delegate double FRaw(double x);
     public enum FRawEnum { linearFunction, cubicFunction, randomFunction }
     [Serializable]
+    public class RawDataItem
+    {
+        public double Coordinate { get; set; }
+        public double Force { get; set; }
+        public RawDataItem(double coordinate, double force)
+        {
+            Coordinate = coordinate;
+            Force = force;
+        }
+    }
     public class RawData
     {
         public double[] SegmentEnds { get; set; }
@@ -41,13 +51,14 @@ namespace ClassLibraryUI
         public double[]? Points { get; set; }
         [JsonIgnore]
         public double[]? ForceValues { get; set; }
+
+        public List<RawDataItem>? RawDataItems { get; set; }
         public RawData(double[] segmentEnds, int numberOfPoints, bool isUniform, FRawEnum forceName)
         {
             SegmentEnds = segmentEnds;
             NumberOfPoints = numberOfPoints;
             IsUniform = isUniform;
             ForceName = forceName;
-            
         }
         public void ComputeRawData()
         {
@@ -59,15 +70,18 @@ namespace ClassLibraryUI
             FRaw force = (FRaw)Delegate.CreateDelegate(typeof(FRaw), method);
             ForceValues = new double[NumberOfPoints];
             Points = new double[NumberOfPoints];
+            RawDataItems = new List<RawDataItem>();
             double step = (SegmentEnds[1] - SegmentEnds[0]) / (NumberOfPoints - 1);
             double x = SegmentEnds[0];
             for (int i = 0; i < NumberOfPoints; ++i)
             {
                 Points[i] = x;
                 ForceValues[i] = force(x);
+                RawDataItems.Add(new RawDataItem(x, force(x)));
                 x += step;
             }
         }
+
         public RawData(string filename)
         {
             RawData? rawData = null;
