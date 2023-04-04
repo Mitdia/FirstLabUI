@@ -252,11 +252,15 @@ namespace WpfFirstLabUI
 
         private void executeFromControlsButton_Click(object sender, RoutedEventArgs e)
         {
-            viewData.ComputeRawData();
-            rawDataListBox.ItemsSource = viewData.ForceValues;
-            viewData.Interpolate();
-            splineDataListBox.ItemsSource = viewData.SplineValues;
-
+            try {
+                viewData.ComputeRawData();
+                rawDataListBox.ItemsSource = viewData.ForceValues;
+                viewData.Interpolate();
+                splineDataListBox.ItemsSource = viewData.SplineValues;
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
