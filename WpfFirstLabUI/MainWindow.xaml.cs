@@ -60,9 +60,7 @@ namespace WpfFirstLabUI
 
                 if (values.Length == 2)
                 {
-                    double num1, num2;
-
-                    if (double.TryParse(values[0], out num1) && double.TryParse(values[1], out num2))
+                    if (double.TryParse(values[0], out double num1) && double.TryParse(values[1], out double num2))
                     {
                         result[0] = num1;
                         result[1] = num2;
@@ -121,7 +119,7 @@ namespace WpfFirstLabUI
 
     }
 
-    public class ViewData : INotifyPropertyChanged
+    public class ViewData : INotifyPropertyChanged, IDataErrorInfo
     {
         public double[] SegmentEnds
         {
@@ -162,6 +160,31 @@ namespace WpfFirstLabUI
             }
             set { }
         }
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(NumberOfPoints):
+                        if (NumberOfPoints <= 2)
+                            return "Number of points must be more than two.";
+                        break;
+                    case nameof(NumberOfInitialPoints):
+                        if (NumberOfInitialPoints <= 2)
+                            return "Number of initial points must be more than two.";
+                        break;
+                    case nameof(SegmentEnds):
+                        if (SegmentEnds == null)
+                            return "Segments ends list must have exactly two elements.";
+                        if (SegmentEnds[0] >= SegmentEnds[1])
+                            return "Segments ends list must be ascending.";
+                        break;
+                }
+                return null;
+            }
+        }
+        public string Error => null;
         RawData RawDataSource {  get; set; }
         SplineData? SplineDataOutput { get; set; }
         public event PropertyChangedEventHandler? PropertyChanged;
