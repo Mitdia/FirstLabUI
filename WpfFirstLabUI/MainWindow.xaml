@@ -43,8 +43,8 @@
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Save" CanExecute="CanExecuteSaveCommand" Executed="saveButton_Click"/>
-        <!-- <CommandBinding Command="local:ApplicationCommands.ExecuteFromFile" CanExecute="ExecuteFromData_CanExecute" Executed="CutCommand_Executed" />
-        <CommandBinding Command="local:ApplicationCommands.ExecuteFromData" CanExecute="ExecuteFromData_CanExecute" Executed="PasteCommand_Executed" />-->
+        <CommandBinding Command="local:CustomCommands.ExecuteFromFile" CanExecute="CanExecuteFromFile" Executed="executeFromFileButton_Click" />
+        <CommandBinding Command="local:CustomCommands.ExecuteFromData" CanExecute="CanExecuteFromData" Executed="executeFromControlsButton_Click" />
     </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -83,14 +83,14 @@
             <Run Text="Integral value:"/>
             <Run Text="{Binding Path=IntegralValue, Converter={StaticResource IntegralValueConverter}}"/>
         </TextBlock>
-        <Button x:Name="executeFromFileButton" Grid.Column="1" Content="Execute from file" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,0,0" Click="executeFromFileButton_Click" Grid.Row="1"/>
+        <Button x:Name="executeFromFileButton" Grid.Column="1" Content="Execute from file" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,0,0" Command="local:CustomCommands.ExecuteFromFile" Grid.Row="1"/>
         <Button x:Name="saveButton" Grid.Column="1" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,250,0" Grid.Row="1" Command="{x:Static ApplicationCommands.Save}"/>
-        <Button x:Name="executeFromControlsButton" Grid.Column="1" Content="Execute from data" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="250,10,0,0" Click="executeFromControlsButton_Click" Grid.Row="1" />
+        <Button x:Name="executeFromControlsButton" Grid.Column="1" Content="Execute from data" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="250,10,0,0" Command="local:CustomCommands.ExecuteFromData" Grid.Row="1" />
         <Menu>
             <MenuItem Header="Save" Command="{x:Static ApplicationCommands.Save}"/>
             <MenuItem Header="Execute">
-                <MenuItem Header="Execute from file" Click="executeFromFileButton_Click"/>
-                <MenuItem Header="Execute from data" Click="executeFromControlsButton_Click"/>
+                <MenuItem Header="Execute from file" Command="local:CustomCommands.ExecuteFromFile"/>
+                <MenuItem Header="Execute from data" Command="local:CustomCommands.ExecuteFromData"/>
             </MenuItem>
         </Menu>
     </Grid>

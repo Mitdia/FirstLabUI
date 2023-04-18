@@ -25,7 +25,7 @@ namespace WpfFirstLabUI
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public class StringToDoubleArrayConverter : IValueConverter
-    {  
+    {
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is double[] doubleArray)
@@ -76,15 +76,16 @@ namespace WpfFirstLabUI
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool boolValue = (bool) value;
-            if (boolValue) 
+            bool boolValue = (bool)value;
+            if (boolValue)
             {
                 return "False";
-            } else
+            }
+            else
             {
                 return "True";
             }
-            
+
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -107,9 +108,10 @@ namespace WpfFirstLabUI
             if (value == null)
             {
                 return "Unknown";
-            } else
+            }
+            else
             {
-                return string.Format("{0:0.00}", (double) value);
+                return string.Format("{0:0.00}", (double)value);
             }
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -125,7 +127,7 @@ namespace WpfFirstLabUI
         {
             get { return RawDataSource.SegmentEnds; }
             set { RawDataSource.SegmentEnds = value; }
-        } 
+        }
         public int NumberOfInitialPoints
         {
             get { return RawDataSource.NumberOfPoints; }
@@ -146,17 +148,18 @@ namespace WpfFirstLabUI
         public double FirstDerivativeOnRightSegmentEnd { get; set; }
         public ObservableCollection<RawDataItem>? ForceValues { get; set; }
         public ObservableCollection<SplineDataItem>? SplineValues { get; set; }
-        public double? IntegralValue 
-        { 
-            get 
-            { if (SplineDataOutput == null)
+        public double? IntegralValue
+        {
+            get
+            {
+                if (SplineDataOutput == null)
                 {
                     return null;
                 }
                 else
                 {
                     return SplineDataOutput.IntegralValue;
-                } 
+                }
             }
             set { }
         }
@@ -185,7 +188,7 @@ namespace WpfFirstLabUI
             }
         }
         public string Error => null;
-        RawData RawDataSource {  get; set; }
+        RawData RawDataSource { get; set; }
         SplineData? SplineDataOutput { get; set; }
         public event PropertyChangedEventHandler? PropertyChanged;
         public void NotifyPropertyChanged(string propName)
@@ -195,7 +198,7 @@ namespace WpfFirstLabUI
         }
         public ViewData()
         {
-            double[] segmentEnds = new double[] {1,  2};
+            double[] segmentEnds = new double[] { 1, 2 };
             RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
         }
         public void ComputeRawData()
@@ -239,7 +242,8 @@ namespace WpfFirstLabUI
             if (RawDataSource == null)
             {
                 throw new Exception("You should create a raw data object before saving");
-            } else
+            }
+            else
             {
                 MessageBox.Show(filename);
                 RawDataSource.Save(filename);
@@ -269,12 +273,14 @@ namespace WpfFirstLabUI
 
         private void executeFromControlsButton_Click(object sender, RoutedEventArgs e)
         {
-            try {
+            try
+            {
                 viewData.ComputeRawData();
                 rawDataListBox.ItemsSource = viewData.ForceValues;
                 viewData.Interpolate();
                 splineDataListBox.ItemsSource = viewData.SplineValues;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -292,11 +298,13 @@ namespace WpfFirstLabUI
                 try
                 {
                     viewData.Save(filename);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     MessageBox.Show($"Save failed because: {ex.Message}");
                 }
-            } 
-            
+            }
+
         }
 
         private void executeFromFileButton_Click(object sender, RoutedEventArgs e)
@@ -332,7 +340,7 @@ namespace WpfFirstLabUI
                     MessageBox.Show($"Interpolation failed because: {ex.Message}");
                 }
             }
-            
+
         }
 
         private void CanExecuteSaveCommand(object sender, CanExecuteRoutedEventArgs e)
@@ -340,19 +348,64 @@ namespace WpfFirstLabUI
             if (viewData.NumberOfInitialPoints <= 2)
             {
                 e.CanExecute = false;
-            } else if (viewData.NumberOfPoints <= 2)
+            }
+            else if (viewData.NumberOfPoints <= 2)
             {
                 e.CanExecute = false;
-            } else if (viewData.SegmentEnds[0] > viewData.SegmentEnds[1]) {
+            }
+            else if (viewData.SegmentEnds[0] > viewData.SegmentEnds[1])
+            {
                 e.CanExecute = false;
-            } else if (viewData.ForceValues == null) {
+            }
+            else if (viewData.ForceValues == null)
+            {
+                e.CanExecute = false;
+            }
+            else
+            {
+                e.CanExecute = true;
+            }
+
+        }
+
+        private void CanExecuteFromData(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (viewData.NumberOfInitialPoints <= 2)
+            {
+                e.CanExecute = false;
+            }
+            else if (viewData.NumberOfPoints <= 2)
+            {
+                e.CanExecute = false;
+            }
+            else if (viewData.SegmentEnds[0] > viewData.SegmentEnds[1])
+            {
                 e.CanExecute = false;
             } else
             {
                 e.CanExecute = true;
             }
-            
+        }
+
+        private void CanExecuteFromFile(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
         }
     }
 
+    public static class CustomCommands
+    {
+        public static readonly RoutedUICommand ExecuteFromData = new RoutedUICommand
+            (
+                "ExecuteFromData",
+                "ExecuteFromData",
+                typeof(CustomCommands)
+            );
+        public static readonly RoutedUICommand ExecuteFromFile = new RoutedUICommand
+            (
+                "ExecuteFormFile",
+                "ExecuteFormFile",
+                typeof(CustomCommands)
+            );
+    }
 }
