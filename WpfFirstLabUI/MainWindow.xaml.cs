@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using ClassLibraryUI;
 using LiveCharts;
+using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 namespace WpfFirstLabUI
 {
@@ -191,19 +192,7 @@ namespace WpfFirstLabUI
         {
             double[] segmentEnds = new double[] { 1, 2 };
             RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
-            ChartData = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Title = "Series 1",
-                    Values = new ChartValues<double> { 1, 3, 2, 4 }
-                },
-                new LineSeries
-                {
-                    Title = "Series 2",
-                    Values = new ChartValues<double> { 5, 7, 6, 8 }
-                }
-            };
+            ChartData = new SeriesCollection {};
         }
         public void ComputeRawData()
         {
@@ -215,6 +204,12 @@ namespace WpfFirstLabUI
                 throw new Exception("Raw Data field is null or field Values haven't been initialized correctly");
             }
             ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
+            ChartValues<ObservablePoint> scatterPlotValues = new ChartValues<ObservablePoint>();
+            foreach (RawDataItem rawDataItem in RawDataSource.RawDataItems)
+            {
+                scatterPlotValues.Add(new ObservablePoint(rawDataItem.Coordinate, rawDataItem.Force));
+            }
+            ChartData.Add(new ScatterSeries{ Title = "Raw Data", Values = scatterPlotValues});
         }
         public void Interpolate()
         {
@@ -262,6 +257,7 @@ namespace WpfFirstLabUI
             }
             ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
         }
+
     }
     public partial class MainWindow : Window
     {
