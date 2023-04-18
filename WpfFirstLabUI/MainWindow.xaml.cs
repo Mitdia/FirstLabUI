@@ -297,6 +297,12 @@ namespace WpfFirstLabUI
             }
             SplineValues = new ObservableCollection<SplineDataItem>(SplineDataOutput.SplineDataItems);
             NotifyPropertyChanged("IntegralValue");
+            ChartValues<ObservablePoint> linePlotValues = new ChartValues<ObservablePoint>();
+            foreach (var splineDataItem in SplineDataOutput.SplineDataItems)
+            {
+                linePlotValues.Add(new ObservablePoint(splineDataItem.PointCoordinate, splineDataItem.SplineValue));
+            }
+            ChartData.Add(new LineSeries { Title = "Interpolated Data", Values = linePlotValues });
         }
         public void Save(string filename)
         {
