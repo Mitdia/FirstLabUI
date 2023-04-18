@@ -273,8 +273,17 @@ namespace WpfFirstLabUI
             InitializeComponent();
             DataContext = viewData;
             forceInput.ItemsSource = Enum.GetValues(typeof(FRawEnum));
-            CommandBinding saveCommandBinding = new CommandBinding(ApplicationCommands.Save, null, CanExecuteSaveCommand);
-            CommandManager.RegisterClassCommandBinding(typeof(Window), saveCommandBinding);
+            Func<double, string> formatFunc = (x) => string.Format("{0:0.00}", x);
+            chart.AxisY.Add(new Axis
+            {
+                Title = "Force",
+                LabelFormatter = formatFunc,
+            });
+            chart.AxisX.Add(new Axis
+            {
+                Title = "Coordinate",
+                LabelFormatter = formatFunc,
+            });
         }
 
         private void executeFromControlsButton_Click(object sender, RoutedEventArgs e)

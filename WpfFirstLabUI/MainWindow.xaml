@@ -61,7 +61,7 @@
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="segmentEndsInput" Grid.Row="1" Margin="110,50,0,0" TextWrapping="Wrap" Text="{Binding Path=SegmentEnds, Converter={StaticResource StringToDoubleArrayConverter}, ValidatesOnDataErrors=True, NotifyOnValidationError=True, Mode=TwoWay}" VerticalAlignment="Top" Width="100" Height="20" HorizontalAlignment="Center"/>
+            <TextBox x:Name="segmentEndsInput" Grid.Row="1" Margin="110,50,0,0" TextWrapping="Wrap" Text="{Binding Path=SegmentEnds, Converter={StaticResource StringToDoubleArrayConverter}, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" VerticalAlignment="Top" Width="100" Height="20" HorizontalAlignment="Center"/>
             <TextBox x:Name="numberOfInitialPointsInput" HorizontalAlignment="Center" Grid.Row="1" Margin="40,80,0,0" TextWrapping="Wrap" Text="{Binding Path=NumberOfInitialPoints, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="30" Height="20"/>
             <RadioButton x:Name="isUniformButton" Content="Uniform Grid" IsChecked="{Binding Path=IsGridUniform}" HorizontalAlignment="Left" Grid.Row="1" Margin="90,120,0,0" VerticalAlignment="Top" Width="90" Height="20"/>
             <RadioButton x:Name="isNonuniformButton" Content="Nonuniform Grid" IsChecked="{Binding Path=IsGridUniform, Converter={StaticResource IsNonuniformToBoolConverter}, Mode=TwoWay}" HorizontalAlignment="Left" Grid.Row="1" Margin="200,120,0,0" VerticalAlignment="Top" Height="20" Width="110"/>
@@ -85,14 +85,7 @@
             <Run Text="Integral value:"/>
             <Run Text="{Binding Path=IntegralValue, Converter={StaticResource IntegralValueConverter}}"/>
         </TextBlock>-->
-        <lvc:CartesianChart x:Name="rawDataListBox" Grid.Column="1" Series="{Binding ChartData}" Margin="25,60,25,10" Grid.Row="1">
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Unit="1" Title="Force"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Unit="1" Title="Coordinate"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-        </lvc:CartesianChart>
+        <lvc:CartesianChart x:Name="chart" Grid.Column="1" Series="{Binding ChartData}" Margin="25,60,25,10" Grid.Row="1"> </lvc:CartesianChart>
         <Button x:Name="executeFromFileButton" Grid.Column="1" Content="Execute from file" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,0,0" Command="local:CustomCommands.ExecuteFromFile" Grid.Row="1"/>
         <Button x:Name="saveButton" Grid.Column="1" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,250,0" Grid.Row="1" Command="{x:Static ApplicationCommands.Save}"/>
         <Button x:Name="executeFromControlsButton" Grid.Column="1" Content="Execute from data" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="250,10,0,0" Command="local:CustomCommands.ExecuteFromData" Grid.Row="1" />
