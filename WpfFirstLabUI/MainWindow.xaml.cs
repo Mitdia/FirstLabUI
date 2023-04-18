@@ -2,12 +2,24 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Controls;
 using System.Text;
+using System.Threading.Tasks;
+using System.Reflection;
+using System.Threading.Tasks;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using ClassLibraryUI;
+using LiveCharts;
+using LiveCharts.Wpf;
 namespace WpfFirstLabUI
 {
     /// <summary>
@@ -188,6 +200,7 @@ namespace WpfFirstLabUI
         public double FirstDerivativeOnRightSegmentEnd { get; set; }
         public ObservableCollection<RawDataItem>? ForceValues { get; set; }
         public ObservableCollection<SplineDataItem>? SplineValues { get; set; }
+        public SeriesCollection ChartData { get; set; }
         public double? IntegralValue
         {
             get
@@ -240,6 +253,19 @@ namespace WpfFirstLabUI
         {
             double[] segmentEnds = new double[] { 1, 2 };
             RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
+            ChartData = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Series 1",
+                    Values = new ChartValues<double> { 1, 3, 2, 4 }
+                },
+                new LineSeries
+                {
+                    Title = "Series 2",
+                    Values = new ChartValues<double> { 5, 7, 6, 8 }
+                }
+            };
         }
         public void ComputeRawData()
         {
@@ -316,9 +342,9 @@ namespace WpfFirstLabUI
             try
             {
                 viewData.ComputeRawData();
-                rawDataListBox.ItemsSource = viewData.ForceValues;
+                // rawDataListBox.ItemsSource = viewData.ForceValues;
                 viewData.Interpolate();
-                splineDataListBox.ItemsSource = viewData.SplineValues;
+                // splineDataListBox.ItemsSource = viewData.SplineValues;
             }
             catch (Exception ex)
             {
@@ -363,7 +389,7 @@ namespace WpfFirstLabUI
                     viewData.NotifyPropertyChanged("SegmentEnds");
                     viewData.NotifyPropertyChanged("NumberOfInitialPoints");
                     viewData.NotifyPropertyChanged("IsUniform");
-                    rawDataListBox.ItemsSource = viewData.ForceValues;
+                    // rawDataListBox.ItemsSource = viewData.ForceValues;
 
                 }
                 catch (Exception ex)
@@ -373,7 +399,7 @@ namespace WpfFirstLabUI
                 try
                 {
                     viewData.Interpolate();
-                    splineDataListBox.ItemsSource = viewData.SplineValues;
+                    // splineDataListBox.ItemsSource = viewData.SplineValues;
                 }
                 catch (Exception ex)
                 {
