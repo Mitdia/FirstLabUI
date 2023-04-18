@@ -30,7 +30,7 @@ namespace ClassLibraryUI
 
     public delegate double FRaw(double x);
     public enum FRawEnum { linearFunction, cubicFunction, randomFunction }
-    [Serializable]
+    [Serializable]  
     public class RawDataItem
     {
         public double Coordinate { get; set; }
@@ -41,6 +41,7 @@ namespace ClassLibraryUI
             Force = force;
         }
     }
+    [Serializable]
     public class RawData
     {
         public double[] SegmentEnds { get; set; }
@@ -51,7 +52,7 @@ namespace ClassLibraryUI
         public double[]? Points { get; set; }
         [JsonIgnore]
         public double[]? ForceValues { get; set; }
-
+        [JsonIgnore]
         public List<RawDataItem>? RawDataItems { get; set; }
         public RawData(double[] segmentEnds, int numberOfPoints, bool isUniform, FRawEnum forceName)
         {
