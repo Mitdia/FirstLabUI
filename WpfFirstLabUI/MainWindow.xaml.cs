@@ -262,15 +262,9 @@ namespace WpfFirstLabUI
         {
             InitializeComponent();
             DataContext = viewData;
-            
             forceInput.ItemsSource = Enum.GetValues(typeof(FRawEnum));
-            // segmentEndsInput.Text = "Segment ends";
-            // string format = "{0:0.00}";
-            // double[] linearCoefficients = { 2, -100 };
-            // ForceFunctions.linearCoefficients = linearCoefficients;
-            // MessageBox.Show(string.Format(format, ForceFunctions.linearFunction(1.0)));
-            // MessageBox.Show(string.Format(format, ForceFunctions.randomFunction(1.0)));
-            // MessageBox.Show(string.Format(format, ForceFunctions.randomFunction(1.0)));
+            CommandBinding saveCommandBinding = new CommandBinding(ApplicationCommands.Save, null, CanExecuteSaveCommand);
+            CommandManager.RegisterClassCommandBinding(typeof(Window), saveCommandBinding);
         }
 
         private void executeFromControlsButton_Click(object sender, RoutedEventArgs e)
@@ -337,6 +331,25 @@ namespace WpfFirstLabUI
                 {
                     MessageBox.Show($"Interpolation failed because: {ex.Message}");
                 }
+            }
+            
+        }
+
+        private void CanExecuteSaveCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (viewData.NumberOfInitialPoints <= 2)
+            {
+                e.CanExecute = false;
+            } else if (viewData.NumberOfPoints <= 2)
+            {
+                e.CanExecute = false;
+            } else if (viewData.SegmentEnds[0] > viewData.SegmentEnds[1]) {
+                e.CanExecute = false;
+            } else if (viewData.ForceValues == null) {
+                e.CanExecute = false;
+            } else
+            {
+                e.CanExecute = true;
             }
             
         }
