@@ -1,23 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
 using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation.Provider;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ClassLibraryUI;
 namespace WpfFirstLabUI
 {
@@ -119,6 +106,32 @@ namespace WpfFirstLabUI
             throw new NotImplementedException();
         }
 
+    }
+    public class IsNumericConverter : IValueConverter 
+    {
+        public object Convert(object value, Type trargetType, object parameters, CultureInfo culture)
+        {
+            string? stringValue = value.ToString();
+            if (stringValue == null || (int) value == 0)
+            {
+                return "";
+            }
+            else
+            {
+                return stringValue;
+            }
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            string? stringValue = (string) value;
+            if (stringValue == null || stringValue == "")
+            {
+                return 0;
+            } else
+            {
+                return Int32.Parse(stringValue);
+            }
+        }
     }
 
     public class ViewData : INotifyPropertyChanged, IDataErrorInfo
