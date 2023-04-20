@@ -7,12 +7,14 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
+        <local:ValidationErrorsConverter x:Key="ValidationErrorsConverter"/>
         <Style TargetType="TextBox">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">
                     <Setter Property="ToolTip"
                     Value="{Binding RelativeSource={x:Static RelativeSource.Self},
-                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                            Path=(Validation.Errors),
+                            Converter={StaticResource ValidationErrorsConverter}}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>

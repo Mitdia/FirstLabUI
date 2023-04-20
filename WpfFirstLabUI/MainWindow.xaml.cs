@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -134,6 +135,31 @@ namespace WpfFirstLabUI
             }
         }
     }
+    public class ValidationErrorsConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is ReadOnlyObservableCollection<ValidationError> errors && errors.Count > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (var error in errors)
+                {
+                    sb.AppendLine(error.ErrorContent.ToString());
+                }
+                return sb.ToString().TrimEnd(Environment.NewLine.ToCharArray());
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 
     public class ViewData : INotifyPropertyChanged, IDataErrorInfo
     {
@@ -201,7 +227,7 @@ namespace WpfFirstLabUI
                 return null;
             }
         }
-        public string Error => null;
+        public string Error => this[string.Empty];
         RawData RawDataSource { get; set; }
         SplineData? SplineDataOutput { get; set; }
         public event PropertyChangedEventHandler? PropertyChanged;
