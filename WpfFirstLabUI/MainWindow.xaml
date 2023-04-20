@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                    Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <local:StringToDoubleArrayConverter x:Key="StringToDoubleArrayConverter" />
         <local:IsNonuniformToBoolConverter x:Key="IsNonuniformToBoolConverter" />
         <local:IntegralValueConverter x:Key="IntegralValueConverter" />
@@ -62,7 +71,7 @@
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="segmentEndsInput" 
+            <TextBox x:Name="segmentEndsInput"
                      HorizontalAlignment="Center" VerticalAlignment="Top" 
                      Grid.Row="1" Margin="110,50,0,0" TextWrapping="Wrap" 
                      Text="{Binding Path=SegmentEnds,
