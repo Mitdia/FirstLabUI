@@ -65,7 +65,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Margin="0,30,0,0" Grid.RowSpan="2">
+        <Grid Name="inputGrid" Grid.Column="0" Margin="0,30,0,0" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="3*"/>

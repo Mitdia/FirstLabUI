@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using ClassLibraryUI;
@@ -383,21 +384,16 @@ namespace WpfFirstLabUI
 
         private void CanExecuteFromData(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (viewData.NumberOfInitialPoints <= 2)
+
+            foreach (FrameworkElement child in inputGrid.Children)
             {
-                e.CanExecute = false;
+                if (Validation.GetHasError(child))
+                {
+                    e.CanExecute = false;
+                    return;
+                }
             }
-            else if (viewData.NumberOfPoints <= 2)
-            {
-                e.CanExecute = false;
-            }
-            else if (viewData.SegmentEnds[0] > viewData.SegmentEnds[1])
-            {
-                e.CanExecute = false;
-            } else
-            {
-                e.CanExecute = true;
-            }
+            e.CanExecute = true;
         }
 
         private void CanExecuteFromFile(object sender, CanExecuteRoutedEventArgs e)
