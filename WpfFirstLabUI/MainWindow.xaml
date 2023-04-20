@@ -185,10 +185,6 @@
             <Run Text="{Binding Path=IntegralValue, Converter={StaticResource IntegralValueConverter}}"/>
         </TextBlock>-->
         <lvc:CartesianChart x:Name="chart" Grid.Column="1" Series="{Binding ChartData}" Margin="25,60,25,10" Grid.Row="1"> </lvc:CartesianChart>
-        <Button x:Name="executeFromFileButton" Grid.Column="1" Content="Execute from file" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,0,0" Command="local:CustomCommands.ExecuteFromFile" Grid.Row="1"/>
-        <Button x:Name="saveButton" Grid.Column="1" Content="Save" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="0,10,250,0" Grid.Row="1" Command="{x:Static ApplicationCommands.Save}"/>
-        <Button x:Name="executeFromControlsButton" Grid.Column="1" Content="Execute from data" HorizontalAlignment="Center" VerticalAlignment="Top" Height="30" Width="100" Margin="250,10,0,0" Command="local:CustomCommands.ExecuteFromData" Grid.Row="1" />
-        </TextBlock>
         
         <Button x:Name="executeFromFileButton" 
                 Grid.Column="1" Grid.Row="1" Margin="0,10,0,0" 
