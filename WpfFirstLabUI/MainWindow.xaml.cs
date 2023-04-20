@@ -2,18 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Windows.Controls;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Automation.Provider;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -154,7 +143,7 @@ namespace WpfFirstLabUI
         {
             if (value is ReadOnlyObservableCollection<ValidationError> errors && errors.Count > 0)
             {
-                StringBuilder sb = new StringBuilder();
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 foreach (var error in errors)
                 {
                     sb.AppendLine(error.ErrorContent.ToString());
