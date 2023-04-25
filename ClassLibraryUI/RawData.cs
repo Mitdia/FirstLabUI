@@ -78,7 +78,7 @@ namespace ClassLibraryUI
             {
                 Points[i] = x;
                 ForceValues[i] = force(x);
-                RawDataItems.Add(new RawDataItem(x, force(x)));
+                RawDataItems.Add(new RawDataItem(x, ForceValues[i]));
                 x += step;
             }
         }
