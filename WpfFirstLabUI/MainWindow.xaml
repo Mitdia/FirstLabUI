@@ -6,7 +6,7 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:WpfFirstLabUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="1200">
     <Window.Resources>
         <local:ValidationErrorsConverter x:Key="ValidationErrorsConverter"/>
         <Style TargetType="TextBox">
@@ -65,6 +65,7 @@
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -177,36 +178,58 @@
                        Height="20" Width="130"/>
         </Grid>
 
-        <!--<ListBox Margin="10,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="125" Height="160" Grid.Row="1" ItemTemplate="{StaticResource rawDataItemTemplate}"/>
-        <ListBox x:Name="splineDataListBox" Grid.Column="1" d:ItemsSource="{Binding Path=SplineValues}" Margin="155,80,0,0" Width="220" Height="160" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource splineDataItemTemplate}" Grid.Row="1"/>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=splineDataListBox, Path=SelectedItem}" VerticalAlignment="Top" Height="80" Width="220" Margin="155,245,0,0" Grid.Row="1"/>
-        <TextBlock x:Name="integralOutput" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,340,0,0" Width="126" Height="20" Grid.Row="1">
+        <ListBox x:Name="rawDataListBox" 
+                 Grid.Column="1" Grid.Row="1" Margin="10,80,0,0" 
+                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Width="125" Height="160" 
+                 ItemTemplate="{StaticResource rawDataItemTemplate}"/>
+
+        <ListBox x:Name="splineDataListBox"
+                 Grid.Column="1"  Grid.Row="1" Margin="155,80,0,0"  
+                 d:ItemsSource="{Binding Path=SplineValues}" 
+                 HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Width="220" Height="160" 
+                 ItemTemplate="{StaticResource splineDataItemTemplate}"/>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" Margin="155,245,0,0" 
+                   TextWrapping="Wrap" 
+                   HorizontalAlignment="Left" 
+                   Text="{Binding ElementName=splineDataListBox, Path=SelectedItem}" 
+                   VerticalAlignment="Top" 
+                   Height="80" Width="220" />
+
+        <TextBlock x:Name="integralOutput"
+                   Grid.Column="1" Grid.Row="1" Margin="0,340,0,0" 
+                   HorizontalAlignment="Center" VerticalAlignment="Top" 
+                   TextWrapping="Wrap" 
+                   Width="126" Height="20" >
             <Run Text="Integral value:"/>
             <Run Text="{Binding Path=IntegralValue, Converter={StaticResource IntegralValueConverter}}"/>
-        </TextBlock>-->
-        <lvc:CartesianChart x:Name="chart" Grid.Column="1" Series="{Binding ChartData}" Margin="25,60,25,10" Grid.Row="1"> </lvc:CartesianChart>
-        
+        </TextBlock>
+
+        <lvc:CartesianChart x:Name="chart" Grid.Column="2" Series="{Binding ChartData}" Margin="25,39,25,30" Grid.Row="1"></lvc:CartesianChart>
+
         <Button x:Name="executeFromFileButton" 
                 Grid.Column="1" Grid.Row="1" Margin="0,10,0,0" 
                 Content="Execute from file" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 Height="30" Width="100" 
                 Command="local:CustomCommands.ExecuteFromFile"/>
-        
+
         <Button x:Name="saveButton"
                 Grid.Column="1" Grid.Row="1" Margin="0,10,250,0" 
                 Content="Save" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 Height="30" Width="100"  
                 Command="{x:Static ApplicationCommands.Save}"/>
-        
+
         <Button x:Name="executeFromControlsButton" 
                 Grid.Column="1" Grid.Row="1" Margin="250,10,0,0" 
                 Content="Execute from data" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 Height="30" Width="100" 
                 Command="local:CustomCommands.ExecuteFromData" />
-        
+
         <Menu>
             <MenuItem Header="Save" Command="{x:Static ApplicationCommands.Save}"/>
             <MenuItem Header="Execute">

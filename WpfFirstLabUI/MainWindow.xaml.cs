@@ -342,9 +342,9 @@ namespace WpfFirstLabUI
             try
             {
                 viewData.ComputeRawData();
-                // rawDataListBox.ItemsSource = viewData.ForceValues;
+                rawDataListBox.ItemsSource = viewData.ForceValues;
                 viewData.Interpolate();
-                // splineDataListBox.ItemsSource = viewData.SplineValues;
+                splineDataListBox.ItemsSource = viewData.SplineValues;
             }
             catch (Exception ex)
             {
@@ -389,7 +389,7 @@ namespace WpfFirstLabUI
                     viewData.NotifyPropertyChanged("SegmentEnds");
                     viewData.NotifyPropertyChanged("NumberOfInitialPoints");
                     viewData.NotifyPropertyChanged("IsUniform");
-                    // rawDataListBox.ItemsSource = viewData.ForceValues;
+                    rawDataListBox.ItemsSource = viewData.ForceValues;
 
                 }
                 catch (Exception ex)
@@ -399,7 +399,7 @@ namespace WpfFirstLabUI
                 try
                 {
                     viewData.Interpolate();
-                    // splineDataListBox.ItemsSource = viewData.SplineValues;
+                    splineDataListBox.ItemsSource = viewData.SplineValues;
                 }
                 catch (Exception ex)
                 {
