@@ -181,22 +181,22 @@
         <ListBox x:Name="rawDataListBox" 
                  Grid.Column="1" Grid.Row="1" Margin="10,80,0,0" 
                  HorizontalAlignment="Left" VerticalAlignment="Top" 
-                 Width="125" Height="160" 
+                 Width="140" Height="160" 
                  ItemTemplate="{StaticResource rawDataItemTemplate}"/>
 
         <ListBox x:Name="splineDataListBox"
-                 Grid.Column="1"  Grid.Row="1" Margin="155,80,0,0"  
+                 Grid.Column="1"  Grid.Row="1" Margin="170,80,0,0"  
                  d:ItemsSource="{Binding Path=SplineValues}" 
                  HorizontalAlignment="Left" VerticalAlignment="Top" 
-                 Width="220" Height="160" 
+                 Width="205" Height="160" 
                  ItemTemplate="{StaticResource splineDataItemTemplate}"/>
 
-        <TextBlock Grid.Column="1" Grid.Row="1" Margin="155,245,0,0" 
+        <TextBlock Grid.Column="1" Grid.Row="1" Margin="170,245,0,0" 
                    TextWrapping="Wrap" 
                    HorizontalAlignment="Left" 
                    Text="{Binding ElementName=splineDataListBox, Path=SelectedItem}" 
                    VerticalAlignment="Top" 
-                   Height="80" Width="220" />
+                   Height="80" Width="205" />
 
         <TextBlock x:Name="integralOutput"
                    Grid.Column="1" Grid.Row="1" Margin="0,340,0,0" 
