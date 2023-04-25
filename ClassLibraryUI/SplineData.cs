@@ -48,8 +48,8 @@ namespace ClassLibraryUI
         
         public SplineData(RawData rawData, double leftEndFirstDerivative, double rightEndFirstDerivative, int numberOfPoints)
         {
-            this.RawData = rawData;
-            this.NumberOfPoints = numberOfPoints;
+            RawData = rawData;
+            NumberOfPoints = numberOfPoints;
             FirstDerivativeOnSegmentEnds[0] = leftEndFirstDerivative;
             FirstDerivativeOnSegmentEnds[1] = rightEndFirstDerivative;
         }
