@@ -92,7 +92,7 @@ namespace WpfFirstLabUI
         }
 
     }
-    public class IntegralValueConverter : IValueConverter
+    public class DoubleToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

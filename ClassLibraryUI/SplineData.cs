@@ -34,10 +34,8 @@ namespace ClassLibraryUI
         }
         public override string ToString()
         {
-            return $"Point with coordinate {PointCoordinate}:\n" +
-                $" - spline = {SplineValue};\n" +
-                $" - first derivative = {FirstDerivativeValue};\n" +
-                $" - second derivative = {SecondDerivativeValue}";
+            string format = "{0:0.00}";
+            return ToString(format);
         }
     }
     public class SplineData

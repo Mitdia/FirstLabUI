@@ -21,22 +21,22 @@
         </Style>
         <local:StringToDoubleArrayConverter x:Key="StringToDoubleArrayConverter" />
         <local:IsNonuniformToBoolConverter x:Key="IsNonuniformToBoolConverter" />
-        <local:IntegralValueConverter x:Key="IntegralValueConverter" />
+        <local:DoubleToStringConverter x:Key="DoubleToStringConverter" />
         <local:IsNumericConverter x:Key="IsNumericConverter"/>
         <DataTemplate x:Key="splineDataItemTemplate">
             <StackPanel Margin="5, 5, 5, 5">
                 <TextBlock Text="Spline data item:"/>
                 <TextBlock>
                     <Run Text="- coordinate: "/>
-                    <Run Text="{Binding Path=PointCoordinate}"/>
+                    <Run Text="{Binding Path=PointCoordinate, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
                 <TextBlock>
                     <Run Text="- spline value: "/>
-                    <Run Text="{Binding Path=SplineValue}"/>
+                    <Run Text="{Binding Path=SplineValue, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
                 <TextBlock>
                     <Run Text="- first derivative value: "/>
-                    <Run Text="{Binding Path=FirstDerivativeValue}"/>
+                    <Run Text="{Binding Path=FirstDerivativeValue, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -45,11 +45,11 @@
                 <TextBlock Text="Raw data item:"/>
                 <TextBlock>
                     <Run Text="- coordinate: "/>
-                    <Run Text="{Binding Path=Coordinate}"/>
+                    <Run Text="{Binding Path=Coordinate, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
                 <TextBlock>
                     <Run Text="- force value: "/>
-                    <Run Text="{Binding Path=Force}"/>
+                    <Run Text="{Binding Path=Force, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -204,7 +204,7 @@
                    TextWrapping="Wrap" 
                    Width="126" Height="20" >
             <Run Text="Integral value:"/>
-            <Run Text="{Binding Path=IntegralValue, Converter={StaticResource IntegralValueConverter}}"/>
+            <Run Text="{Binding Path=IntegralValue, Converter={StaticResource DoubleToStringConverter}}"/>
         </TextBlock>
 
         <lvc:CartesianChart x:Name="chart" Grid.Column="2" Series="{Binding ChartData}" Margin="25,39,25,30" Grid.Row="1"></lvc:CartesianChart>
