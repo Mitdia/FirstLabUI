@@ -450,7 +450,14 @@ namespace WpfFirstLabUI
 
         private void CanExecuteFromFile(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            if (viewData.NumberOfPoints <= 2)
+            {
+                e.CanExecute = false;
+            }
+            else 
+            { 
+                e.CanExecute = true; 
+            }
         }
     }
 
