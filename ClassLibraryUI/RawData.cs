@@ -48,9 +48,7 @@ namespace ClassLibraryUI
         public int NumberOfPoints { get; set; }
         public bool IsUniform { get; set; }
         public FRawEnum ForceName { get; set; }
-        [JsonIgnore]
         public double[]? Points { get; set; }
-        [JsonIgnore]
         public double[]? ForceValues { get; set; }
         [JsonIgnore]
         public List<RawDataItem>? RawDataItems { get; set; }
@@ -90,12 +88,20 @@ namespace ClassLibraryUI
             try { Load(filename, out rawData); }
             catch (Exception) { }
 
-            if (rawData != null) {
+            if (rawData != null && rawData.Points != null && rawData.ForceValues != null) {
                 SegmentEnds = rawData.SegmentEnds;
                 NumberOfPoints = rawData.NumberOfPoints;
                 IsUniform = rawData.IsUniform;
                 Points = rawData.Points;
-                ComputeRawData();
+                ForceName = rawData.ForceName;
+                ForceValues = rawData.ForceValues;
+                Points = rawData.Points;
+                RawDataItems = new List<RawDataItem>();
+                for (int i = 0; i < NumberOfPoints; ++i)
+                {
+                    RawDataItems.Add(new RawDataItem(Points[i], ForceValues[i]));
+                }
+
             } else
             {
                 double[] segmentEndsDefaultValues = { 0, 1 };
