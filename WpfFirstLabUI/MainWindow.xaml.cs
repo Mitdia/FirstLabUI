@@ -8,8 +8,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using ClassLibraryUI;
 using ViewModelFirstLabUI;
-using LiveCharts;
-using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 namespace WpfFirstLabUI
 {
@@ -163,168 +161,15 @@ namespace WpfFirstLabUI
         }
     }
     
-    
-    // public class ViewData : INotifyPropertyChanged, IDataErrorInfo
-    // {
-    //     public double[] SegmentEnds
-    //     {
-    //         get { return RawDataSource.SegmentEnds; }
-    //         set { RawDataSource.SegmentEnds = value; }
-    //     }
-    //     public int NumberOfInitialPoints
-    //     {
-    //         get { return RawDataSource.NumberOfPoints; }
-    //         set { RawDataSource.NumberOfPoints = value; }
-    //     }
-    //     public bool IsGridUniform
-    //     {
-    //         get { return RawDataSource.IsUniform; }
-    //         set { RawDataSource.IsUniform = value; }
-    //     }
-    //     public FRawEnum ForceName
-    //     {
-    //         get { return RawDataSource.ForceName; }
-    //         set { RawDataSource.ForceName = value; }
-    //     }
-    //     public int NumberOfPoints { get; set; }
-    //     public double FirstDerivativeOnLeftSegmentEnd { get; set; }
-    //     public double FirstDerivativeOnRightSegmentEnd { get; set; }
-    //     public ObservableCollection<RawDataItem>? ForceValues { get; set; }
-    //     public ObservableCollection<SplineDataItem>? SplineValues { get; set; }
-    //     public SeriesCollection ChartData { get; set; }
-    //     public double? IntegralValue
-    //     {
-    //         get
-    //         {
-    //             if (SplineDataOutput == null)
-    //             {
-    //                 return null;
-    //             }
-    //             else
-    //             {
-    //                 return SplineDataOutput.IntegralValue;
-    //             }
-    //         }
-    //         set { }
-    //     }
-    //     public string this[string columnName]
-    //     {
-    //         get
-    //         {
-    //             switch (columnName)
-    //             {
-    //                 case nameof(NumberOfPoints):
-    //                     if (NumberOfPoints <= 2)
-    //                         return "Number of points must be more than two.";
-    //                     break;
-    //                 case nameof(NumberOfInitialPoints):
-    //                     if (NumberOfInitialPoints <= 2)
-    //                         return "Number of initial points must be more than two.";
-    //                     break;
-    //                 case nameof(SegmentEnds):
-    //                     if (SegmentEnds == null)
-    //                         return "Segments ends list must have exactly two elements.";
-    //                     if (SegmentEnds[0] >= SegmentEnds[1])
-    //                         return "Segments ends list must be ascending.";
-    //                     break;
-    //             }
-    //             return null;
-    //         }
-    //     }
-    //     public string Error => this[string.Empty];
-    //     RawData RawDataSource { get; set; }
-    //     SplineData? SplineDataOutput { get; set; }
-    //     public event PropertyChangedEventHandler? PropertyChanged;
-    //     public void NotifyPropertyChanged(string propName)
-    //     {
-    //         if (PropertyChanged != null)
-    //             PropertyChanged(this, new PropertyChangedEventArgs(propName));
-    //     }
-    //     public ViewData()
-    //     {
-    //         double[] segmentEnds = new double[] { 1, 2 };
-    //         RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
-    //         ChartData = new SeriesCollection {};
-    //     }
-    //     public void ComputeRawData()
-    //     {
-    //
-    //         RawDataSource.ComputeRawData();
-    //         if (RawDataSource.RawDataItems == null)
-    //         {
-    //             // MessageBox.Show("Error! Computation of a RawData failed.");
-    //             throw new Exception("Raw Data field is null or field Values haven't been initialized correctly");
-    //         }
-    //         ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
-    //         ChartValues<ObservablePoint> scatterPlotValues = new ChartValues<ObservablePoint>();
-    //         foreach (RawDataItem rawDataItem in RawDataSource.RawDataItems)
-    //         {
-    //             scatterPlotValues.Add(new ObservablePoint(rawDataItem.Coordinate, rawDataItem.Force));
-    //         }
-    //         ChartData.Add(new ScatterSeries{ Title = "Raw Data", Values = scatterPlotValues});
-    //     }
-    //     public void Interpolate()
-    //     {
-    //         string? errorMessage = null;
-    //         if (RawDataSource == null)
-    //         {
-    //             MessageBox.Show("You should build a Raw Data object before interpolation!");
-    //             throw new Exception("Raw Data object is null!");
-    //         }
-    //         SplineDataOutput = new SplineData(RawDataSource, FirstDerivativeOnLeftSegmentEnd, FirstDerivativeOnRightSegmentEnd, NumberOfPoints);
-    //         try
-    //         {
-    //             SplineDataOutput.BuildSpline();
-    //         }
-    //         catch (Exception ex)
-    //         {
-    //             errorMessage = ex.Message;
-    //         }
-    //         if (errorMessage != null || SplineDataOutput == null || SplineDataOutput.SplineDataItems == null)
-    //         {
-    //             MessageBox.Show("Interpolation failed!\n" + errorMessage);
-    //             throw new Exception("Either Spline Data or Spline Data Items is null");
-    //         }
-    //         SplineValues = new ObservableCollection<SplineDataItem>(SplineDataOutput.SplineDataItems);
-    //         NotifyPropertyChanged("IntegralValue");
-    //         ChartValues<ObservablePoint> linePlotValues = new ChartValues<ObservablePoint>();
-    //         foreach (var splineDataItem in SplineDataOutput.SplineDataItems)
-    //         {
-    //             linePlotValues.Add(new ObservablePoint(splineDataItem.PointCoordinate, splineDataItem.SplineValue));
-    //         }
-    //         ChartData.Add(new LineSeries { Title = "Interpolated Data", Values = linePlotValues });
-    //     }
-    //     public void Save(string filename)
-    //     {
-    //         if (RawDataSource == null)
-    //         {
-    //             throw new Exception("You should create a raw data object before saving");
-    //         }
-    //         else
-    //         {
-    //             MessageBox.Show(filename);
-    //             RawDataSource.Save(filename);
-    //         }
-    //     }
-    //     public void Load(string filename)
-    //     {
-    //         RawDataSource = new RawData(filename);
-    //         if (RawDataSource.RawDataItems == null)
-    //         {
-    //             throw new Exception("The loaded raw data has no Force Values array");
-    //         }
-    //         ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
-    //     }
-    //
-    // }
+ 
     public partial class MainWindow : Window, IUIServices
     {
-        public MainViewModel viewData { get; set; }
+        public MainViewModel ViewData { get; set; }
         public MainWindow()
         {
-            viewData = new MainViewModel(this);
+            ViewData = new MainViewModel(this);
             InitializeComponent();
-            DataContext = viewData;
+            DataContext = ViewData;
             forceInput.ItemsSource = Enum.GetValues(typeof(FRawEnum));
             Func<double, string> formatFunc = (x) => string.Format("{0:0.00}", x);
             chart.AxisY.Add(new Axis
@@ -352,10 +197,10 @@ namespace WpfFirstLabUI
         {
             try
             {
-                viewData.ComputeRawData();
-                rawDataListBox.ItemsSource = viewData.ForceValues;
-                viewData.Interpolate();
-                splineDataListBox.ItemsSource = viewData.SplineValues;
+                ViewData.ComputeRawData();
+                rawDataListBox.ItemsSource = ViewData.ForceValues;
+                ViewData.Interpolate();
+                splineDataListBox.ItemsSource = ViewData.SplineValues;
             }
             catch (Exception ex)
             {
@@ -374,7 +219,7 @@ namespace WpfFirstLabUI
                 string filename = saveFileDialog.FileName;
                 try
                 {
-                    viewData.Save(filename);
+                    ViewData.Save(filename);
                 }
                 catch (Exception ex)
                 {
@@ -395,12 +240,12 @@ namespace WpfFirstLabUI
                 string filename = openFileDialog.FileName;
                 try
                 {
-                    viewData.Load(filename);
-                    viewData.NotifyPropertyChanged("ForceName");
-                    viewData.NotifyPropertyChanged("SegmentEnds");
-                    viewData.NotifyPropertyChanged("NumberOfInitialPoints");
-                    viewData.NotifyPropertyChanged("IsUniform");
-                    rawDataListBox.ItemsSource = viewData.ForceValues;
+                    ViewData.Load(filename);
+                    ViewData.NotifyPropertyChanged("ForceName");
+                    ViewData.NotifyPropertyChanged("SegmentEnds");
+                    ViewData.NotifyPropertyChanged("NumberOfInitialPoints");
+                    ViewData.NotifyPropertyChanged("IsUniform");
+                    rawDataListBox.ItemsSource = ViewData.ForceValues;
 
                 }
                 catch (Exception ex)
@@ -409,8 +254,8 @@ namespace WpfFirstLabUI
                 }
                 try
                 {
-                    viewData.Interpolate();
-                    splineDataListBox.ItemsSource = viewData.SplineValues;
+                    ViewData.Interpolate();
+                    splineDataListBox.ItemsSource = ViewData.SplineValues;
                 }
                 catch (Exception ex)
                 {
@@ -422,19 +267,19 @@ namespace WpfFirstLabUI
 
         private void CanExecuteSaveCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (viewData.NumberOfInitialPoints <= 2)
+            if (ViewData.NumberOfInitialPoints <= 2)
             {
                 e.CanExecute = false;
             }
-            else if (viewData.NumberOfPoints <= 2)
+            else if (ViewData.NumberOfPoints <= 2)
             {
                 e.CanExecute = false;
             }
-            else if (viewData.SegmentEnds[0] > viewData.SegmentEnds[1])
+            else if (ViewData.SegmentEnds[0] > ViewData.SegmentEnds[1])
             {
                 e.CanExecute = false;
             }
-            else if (viewData.ForceValues == null)
+            else if (ViewData.ForceValues == null)
             {
                 e.CanExecute = false;
             }
@@ -461,7 +306,7 @@ namespace WpfFirstLabUI
 
         private void CanExecuteFromFile(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (viewData == null || viewData.NumberOfPoints <= 2)
+            if (ViewData == null || ViewData.NumberOfPoints <= 2)
             {
                 e.CanExecute = false;
             }

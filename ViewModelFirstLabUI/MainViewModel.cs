@@ -140,7 +140,6 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         {
             throw new Exception("You should create a raw data object before saving");
         }
-        // MessageBox.Show(filename);
         RawDataSource.Save(filename);
     }
     public void Load(string filename)
