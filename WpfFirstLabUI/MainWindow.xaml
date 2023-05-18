@@ -54,9 +54,6 @@
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
-    <Window.CommandBindings>
-        <CommandBinding Command="ApplicationCommands.Save" CanExecute="CanExecuteSaveCommand" Executed="saveButton_Click"/>
-    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -220,7 +217,7 @@
                 Content="Save" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 Height="30" Width="100"  
-                Command="{x:Static ApplicationCommands.Save}"/>
+                Command="{Binding SaveCommand}"/>
 
         <Button x:Name="executeFromControlsButton" 
                 Grid.Column="1" Grid.Row="1" Margin="250,10,0,0" 
@@ -230,10 +227,10 @@
                 Command="{Binding ExecuteFromDataCommand}" />
 
         <Menu>
-            <MenuItem Header="Save" Command="{x:Static ApplicationCommands.Save}"/>
+            <MenuItem Header="Save" Command="{Binding SaveCommand}"/>
             <MenuItem Header="Execute">
-                <MenuItem Header="Execute from file" Command="local:CustomCommands.ExecuteFromFile"/>
-                <MenuItem Header="Execute from data" Command="local:CustomCommands.ExecuteFromData"/>
+                <MenuItem Header="Execute from file" Command="{Binding ExecuteFromFileCommand}"/>
+                <MenuItem Header="Execute from data" Command="{Binding ExecuteFromDataCommand}"/>
             </MenuItem>
         </Menu>
     </Grid>

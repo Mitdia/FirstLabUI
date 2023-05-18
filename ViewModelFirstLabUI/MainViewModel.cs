@@ -16,6 +16,7 @@ public interface IUIServices
     void PlotScatterSeries(ScatterSeries series);
 
     string? ChooseFileToOpen();
+    string? ChooseFileToSave();
 }
 
 
@@ -137,12 +138,38 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         return string.IsNullOrEmpty(this[nameof(NumberOfPoints)]);
     }
 
+    private void SaveToFile(object sender)
+    {
+        string? filename = uiServices.ChooseFileToSave();
+        if (filename != null)
+        {
+            try
+            {
+                Save(filename);
+            }
+            catch (Exception ex)
+            {
+                // MessageBox.Show($"Save failed because: {ex.Message}");
+            }
+        }
+
+    }
+
+    private bool CanSaveToFile(object sender)
+    {
+        return string.IsNullOrEmpty(this[nameof(SegmentEnds)])
+            && string.IsNullOrEmpty(this[nameof(NumberOfInitialPoints)])
+            && string.IsNullOrEmpty(this[nameof(NumberOfPoints)]) 
+            && ForceValues != null;
+    }
+
 
     public string Error => this[string.Empty];
     private RawData RawDataSource { get; set; }
     private SplineData? SplineDataOutput { get; set; }
     public ICommand ExecuteFromDataCommand { get; private set; }
     public ICommand ExecuteFromFileCommand { get; private set; }
+    public ICommand SaveCommand { get; private set; }
     public MainViewModel(IUIServices uiServices)
     {
         this.uiServices = uiServices;
@@ -150,6 +177,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
         ExecuteFromDataCommand = new RelayCommand(ExecuteFromData, CanExecuteFromData);
         ExecuteFromFileCommand = new RelayCommand(ExecuteFromFile, CanExecuteFromFile);
+        SaveCommand = new RelayCommand(SaveToFile, CanSaveToFile);
 
     }
     public void ComputeRawData()

@@ -206,8 +206,7 @@ namespace WpfFirstLabUI
             }
             return null;
         }
-
-        private void saveButton_Click(object sender, RoutedEventArgs e)
+        public string? ChooseFileToSave()
         {
             Microsoft.Win32.SaveFileDialog saveFileDialog = new();
             saveFileDialog.FileName = "RawData"; // Default file name
@@ -215,59 +214,9 @@ namespace WpfFirstLabUI
             bool? result = saveFileDialog.ShowDialog();
             if (result == true)
             {
-                string filename = saveFileDialog.FileName;
-                try
-                {
-                    ViewData.Save(filename);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Save failed because: {ex.Message}");
-                }
+                return saveFileDialog.FileName;
             }
-
+            return null;
         }
-
-        private void CanExecuteSaveCommand(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (ViewData.NumberOfInitialPoints <= 2)
-            {
-                e.CanExecute = false;
-            }
-            else if (ViewData.NumberOfPoints <= 2)
-            {
-                e.CanExecute = false;
-            }
-            else if (ViewData.SegmentEnds[0] > ViewData.SegmentEnds[1])
-            {
-                e.CanExecute = false;
-            }
-            else if (ViewData.ForceValues == null)
-            {
-                e.CanExecute = false;
-            }
-            else
-            {
-                e.CanExecute = true;
-            }
-
-        }
-
-    }
-
-    public static class CustomCommands
-    {
-        public static readonly RoutedUICommand ExecuteFromData = new RoutedUICommand
-            (
-                "ExecuteFromData",
-                "ExecuteFromData",
-                typeof(CustomCommands)
-            );
-        public static readonly RoutedUICommand ExecuteFromFile = new RoutedUICommand
-            (
-                "ExecuteFormFile",
-                "ExecuteFormFile",
-                typeof(CustomCommands)
-            );
     }
 }
