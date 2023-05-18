@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibraryUI\ClassLibraryUI.csproj" />
+    <ProjectReference Include="..\ViewModelFirstLabUI\ViewModelFirstLabUI.csproj" />
   </ItemGroup>
 
 </Project>
