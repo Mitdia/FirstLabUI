@@ -64,22 +64,22 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
                         return "Number of initial points must be more than two.";
                     break;
                 case nameof(SegmentEnds):
-                    if (SegmentEnds == null)
+                    if (SegmentEnds.Length != 2)
                         return "Segments ends list must have exactly two elements.";
                     if (SegmentEnds[0] >= SegmentEnds[1])
                         return "Segments ends list must be ascending.";
                     break;
             }
-            return null;
+            return "";
         }
     }
     public string Error => this[string.Empty];
-    RawData RawDataSource { get; set; }
-    SplineData? SplineDataOutput { get; set; }
+    private RawData RawDataSource { get; set; }
+    private SplineData? SplineDataOutput { get; set; }
     public MainViewModel(IUIServices uiServices)
     {
         this.uiServices = uiServices;
-        double[] segmentEnds = new double[] { 1, 2 };
+        var segmentEnds = new double[] { 1, 2 };
         RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
     }
     public void ComputeRawData()
@@ -140,11 +140,8 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         {
             throw new Exception("You should create a raw data object before saving");
         }
-        else
-        {
-            // MessageBox.Show(filename);
-            RawDataSource.Save(filename);
-        }
+        // MessageBox.Show(filename);
+        RawDataSource.Save(filename);
     }
     public void Load(string filename)
     {
