@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 using ClassLibraryUI;
 using LiveCharts;
 using LiveCharts.Defaults;
@@ -73,14 +74,40 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             return "";
         }
     }
+    private void ExecuteFromData(object sender)
+    {
+        try
+        {
+            ComputeRawData();
+            NotifyPropertyChanged(nameof(ForceValues));
+            Interpolate();
+            NotifyPropertyChanged(nameof(SplineValues));
+        }
+        catch (Exception ex)
+        {
+            // MessageBox.Show(ex.Message);
+        }
+    }
+
+    private bool CanExecuteFromData(object e)
+    {
+        return string.IsNullOrEmpty(this[nameof(SegmentEnds)]) 
+            && string.IsNullOrEmpty(this[nameof(NumberOfInitialPoints)]) 
+            && string.IsNullOrEmpty(this[nameof(NumberOfPoints)]);
+    }
+
+
     public string Error => this[string.Empty];
     private RawData RawDataSource { get; set; }
     private SplineData? SplineDataOutput { get; set; }
+    public ICommand ExecuteFromDataCommand { get; private set; }
     public MainViewModel(IUIServices uiServices)
     {
         this.uiServices = uiServices;
         var segmentEnds = new double[] { 1, 2 };
         RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
+        ExecuteFromDataCommand = new RelayCommand(ExecuteFromData, CanExecuteFromData);
+
     }
     public void ComputeRawData()
     {
@@ -151,4 +178,4 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         }
         ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
     }
-    }
+ }

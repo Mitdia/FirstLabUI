@@ -193,20 +193,6 @@ namespace WpfFirstLabUI
         {
             chart.Series.Add(series);
         }
-        private void executeFromControlsButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ViewData.ComputeRawData();
-                rawDataListBox.ItemsSource = ViewData.ForceValues;
-                ViewData.Interpolate();
-                splineDataListBox.ItemsSource = ViewData.SplineValues;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -290,19 +276,6 @@ namespace WpfFirstLabUI
 
         }
 
-        private void CanExecuteFromData(object sender, CanExecuteRoutedEventArgs e)
-        {
-
-            foreach (FrameworkElement child in inputGrid.Children)
-            {
-                if (Validation.GetHasError(child))
-                {
-                    e.CanExecute = false;
-                    return;
-                }
-            }
-            e.CanExecute = true;
-        }
 
         private void CanExecuteFromFile(object sender, CanExecuteRoutedEventArgs e)
         {

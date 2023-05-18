@@ -57,7 +57,6 @@
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Save" CanExecute="CanExecuteSaveCommand" Executed="saveButton_Click"/>
         <CommandBinding Command="local:CustomCommands.ExecuteFromFile" CanExecute="CanExecuteFromFile" Executed="executeFromFileButton_Click" />
-        <CommandBinding Command="local:CustomCommands.ExecuteFromData" CanExecute="CanExecuteFromData" Executed="executeFromControlsButton_Click" />
     </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -182,14 +181,15 @@
                  Grid.Column="1" Grid.Row="1" Margin="10,80,0,0" 
                  HorizontalAlignment="Left" VerticalAlignment="Top" 
                  Width="140" Height="160" 
-                 ItemTemplate="{StaticResource rawDataItemTemplate}"/>
+                 ItemTemplate="{StaticResource rawDataItemTemplate}"
+                 ItemsSource="{Binding ForceValues}"/>
 
         <ListBox x:Name="splineDataListBox"
                  Grid.Column="1"  Grid.Row="1" Margin="170,80,0,0"  
-                 d:ItemsSource="{Binding Path=SplineValues}" 
                  HorizontalAlignment="Left" VerticalAlignment="Top" 
                  Width="205" Height="160" 
-                 ItemTemplate="{StaticResource splineDataItemTemplate}"/>
+                 ItemTemplate="{StaticResource splineDataItemTemplate}"
+                 ItemsSource="{Binding Path=SplineValues}"/>
 
         <TextBlock Grid.Column="1" Grid.Row="1" Margin="170,245,0,0" 
                    TextWrapping="Wrap" 
@@ -228,7 +228,7 @@
                 Content="Execute from data" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 Height="30" Width="100" 
-                Command="local:CustomCommands.ExecuteFromData" />
+                Command="{Binding ExecuteFromDataCommand}" />
 
         <Menu>
             <MenuItem Header="Save" Command="{x:Static ApplicationCommands.Save}"/>
