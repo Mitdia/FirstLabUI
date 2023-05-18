@@ -194,6 +194,19 @@ namespace WpfFirstLabUI
             chart.Series.Add(series);
         }
 
+        public string? ChooseFileToOpen()
+        {
+            Microsoft.Win32.OpenFileDialog openFileDialog = new();
+            openFileDialog.FileName = "RawData"; // Default file name
+            openFileDialog.DefaultExt = ".json"; // Default file extension
+            bool? result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                return openFileDialog.FileName;
+            }
+            return null;
+        }
+
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog saveFileDialog = new();
@@ -210,42 +223,6 @@ namespace WpfFirstLabUI
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Save failed because: {ex.Message}");
-                }
-            }
-
-        }
-
-        private void executeFromFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new();
-            openFileDialog.FileName = "RawData"; // Default file name
-            openFileDialog.DefaultExt = ".json"; // Default file extension
-            bool? result = openFileDialog.ShowDialog();
-            if (result == true)
-            {
-                string filename = openFileDialog.FileName;
-                try
-                {
-                    ViewData.Load(filename);
-                    ViewData.NotifyPropertyChanged("ForceName");
-                    ViewData.NotifyPropertyChanged("SegmentEnds");
-                    ViewData.NotifyPropertyChanged("NumberOfInitialPoints");
-                    ViewData.NotifyPropertyChanged("IsUniform");
-                    rawDataListBox.ItemsSource = ViewData.ForceValues;
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Load failed because: {ex.Message}");
-                }
-                try
-                {
-                    ViewData.Interpolate();
-                    splineDataListBox.ItemsSource = ViewData.SplineValues;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Interpolation failed because: {ex.Message}");
                 }
             }
 
@@ -276,18 +253,6 @@ namespace WpfFirstLabUI
 
         }
 
-
-        private void CanExecuteFromFile(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (ViewData == null || ViewData.NumberOfPoints <= 2)
-            {
-                e.CanExecute = false;
-            }
-            else 
-            { 
-                e.CanExecute = true; 
-            }
-        }
     }
 
     public static class CustomCommands

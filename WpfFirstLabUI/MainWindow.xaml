@@ -56,7 +56,6 @@
     </Window.Resources>
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Save" CanExecute="CanExecuteSaveCommand" Executed="saveButton_Click"/>
-        <CommandBinding Command="local:CustomCommands.ExecuteFromFile" CanExecute="CanExecuteFromFile" Executed="executeFromFileButton_Click" />
     </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
@@ -214,7 +213,7 @@
                 Content="Execute from file" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
                 Height="30" Width="100" 
-                Command="local:CustomCommands.ExecuteFromFile"/>
+                Command="{Binding ExecuteFromFileCommand}"/>
 
         <Button x:Name="saveButton"
                 Grid.Column="1" Grid.Row="1" Margin="0,10,250,0" 

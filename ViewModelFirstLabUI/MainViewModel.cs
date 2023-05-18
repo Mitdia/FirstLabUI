@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using ClassLibraryUI;
 using LiveCharts;
@@ -13,6 +14,8 @@ public interface IUIServices
     // void ReportError(string message);
     void PlotLineSeries(LineSeries series);
     void PlotScatterSeries(ScatterSeries series);
+
+    string? ChooseFileToOpen();
 }
 
 
@@ -89,11 +92,49 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         }
     }
 
-    private bool CanExecuteFromData(object e)
+    private bool CanExecuteFromData(object sender)
     {
         return string.IsNullOrEmpty(this[nameof(SegmentEnds)]) 
             && string.IsNullOrEmpty(this[nameof(NumberOfInitialPoints)]) 
             && string.IsNullOrEmpty(this[nameof(NumberOfPoints)]);
+    }
+
+    private void ExecuteFromFile(object sender)
+    {
+        string? filename = uiServices.ChooseFileToOpen();
+        if (filename != null)
+        {
+            try
+            {
+                Load(filename);
+                NotifyPropertyChanged("ForceName");
+                NotifyPropertyChanged("SegmentEnds");
+                NotifyPropertyChanged("NumberOfInitialPoints");
+                NotifyPropertyChanged("IsUniform");
+                NotifyPropertyChanged("ForceValues");
+
+            }
+            catch (Exception ex)
+            {
+                // MessageBox.Show($"Load failed because: {ex.Message}");
+            }
+            try
+            {
+                Interpolate();
+                NotifyPropertyChanged("SplineValues");
+            }
+            catch (Exception ex)
+            {
+                // MessageBox.Show($"Interpolation failed because: {ex.Message}");
+            }
+        }
+
+
+    }
+
+    private bool CanExecuteFromFile(object sender)
+    {
+        return string.IsNullOrEmpty(this[nameof(NumberOfPoints)]);
     }
 
 
@@ -101,12 +142,14 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
     private RawData RawDataSource { get; set; }
     private SplineData? SplineDataOutput { get; set; }
     public ICommand ExecuteFromDataCommand { get; private set; }
+    public ICommand ExecuteFromFileCommand { get; private set; }
     public MainViewModel(IUIServices uiServices)
     {
         this.uiServices = uiServices;
         var segmentEnds = new double[] { 1, 2 };
         RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
         ExecuteFromDataCommand = new RelayCommand(ExecuteFromData, CanExecuteFromData);
+        ExecuteFromFileCommand = new RelayCommand(ExecuteFromFile, CanExecuteFromFile);
 
     }
     public void ComputeRawData()
