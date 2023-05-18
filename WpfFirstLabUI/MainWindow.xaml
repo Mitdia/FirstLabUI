@@ -207,7 +207,7 @@
             <Run Text="{Binding Path=IntegralValue, Converter={StaticResource DoubleToStringConverter}}"/>
         </TextBlock>
 
-        <lvc:CartesianChart x:Name="chart" Grid.Column="2" Series="{Binding ChartData}" Margin="25,39,25,30" Grid.Row="1"></lvc:CartesianChart>
+        <lvc:CartesianChart x:Name="chart" Grid.Column="2" Margin="25,39,25,30" Grid.Row="1"></lvc:CartesianChart>
 
         <Button x:Name="executeFromFileButton" 
                 Grid.Column="1" Grid.Row="1" Margin="0,10,0,0" 

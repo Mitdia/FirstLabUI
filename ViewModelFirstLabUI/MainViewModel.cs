@@ -17,7 +17,7 @@ public interface IUIServices
 
 public class MainViewModel : ViewModelBase, IDataErrorInfo
 {
-    public IUIServices uiServices;
+    private readonly IUIServices uiServices;
     public double[] SegmentEnds
     {
         get => RawDataSource.SegmentEnds;
@@ -43,21 +43,10 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
     public double FirstDerivativeOnRightSegmentEnd { get; set; }
     public ObservableCollection<RawDataItem>? ForceValues { get; set; }
     public ObservableCollection<SplineDataItem>? SplineValues { get; set; }
-    public SeriesCollection ChartData { get; }
-    
+
     public double? IntegralValue
     {
-        get
-        {
-            if (SplineDataOutput == null)
-            {
-                return null;
-            }
-            else
-            {
-                return SplineDataOutput.IntegralValue;
-            }
-        }
+        get => SplineDataOutput?.IntegralValue;
         set { }
     }
     public string this[string columnName]
@@ -92,7 +81,6 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         this.uiServices = uiServices;
         double[] segmentEnds = new double[] { 1, 2 };
         RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
-        ChartData = new SeriesCollection {};
     }
     public void ComputeRawData()
     {
