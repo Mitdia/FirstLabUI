@@ -48,6 +48,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
     public double FirstDerivativeOnRightSegmentEnd { get; set; }
     public ObservableCollection<RawDataItem>? ForceValues { get; set; }
     public ObservableCollection<SplineDataItem>? SplineValues { get; set; }
+    public Array ForceTypes { get; set; }
 
     public double? IntegralValue
     {
@@ -173,6 +174,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
     public MainViewModel(IUIServices uiServices)
     {
         this.uiServices = uiServices;
+        ForceTypes = Enum.GetValues(typeof(FRawEnum));
         var segmentEnds = new double[] { 1, 2 };
         RawDataSource = new RawData(segmentEnds, 0, true, new FRawEnum());
         ExecuteFromDataCommand = new RelayCommand(ExecuteFromData, CanExecuteFromData);

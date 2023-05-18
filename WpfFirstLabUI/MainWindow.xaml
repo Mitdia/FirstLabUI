@@ -109,6 +109,7 @@
 
             <ComboBox x:Name="forceInput"
                       SelectedItem="{Binding Path=ForceName}"
+                      ItemsSource="{Binding ForceTypes}"
                       HorizontalAlignment="Center" VerticalAlignment="Top"
                       Grid.Row="1" Margin="0,160,0,0" 
                       Width="120" Height="22"/>

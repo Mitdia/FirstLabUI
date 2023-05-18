@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
-using ClassLibraryUI;
 using ViewModelFirstLabUI;
 using LiveCharts.Wpf;
 namespace WpfFirstLabUI
@@ -164,13 +161,10 @@ namespace WpfFirstLabUI
  
     public partial class MainWindow : Window, IUIServices
     {
-        public MainViewModel ViewData { get; set; }
         public MainWindow()
         {
-            ViewData = new MainViewModel(this);
             InitializeComponent();
-            DataContext = ViewData;
-            forceInput.ItemsSource = Enum.GetValues(typeof(FRawEnum));
+            DataContext = new MainViewModel(this);
             Func<double, string> formatFunc = (x) => string.Format("{0:0.00}", x);
             chart.AxisY.Add(new Axis
             {
