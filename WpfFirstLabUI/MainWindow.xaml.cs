@@ -8,9 +8,6 @@ using ViewModelFirstLabUI;
 using LiveCharts.Wpf;
 namespace WpfFirstLabUI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public class StringToDoubleArrayConverter : IValueConverter
     {
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -200,6 +197,7 @@ namespace WpfFirstLabUI
             }
             return null;
         }
+
         public string? ChooseFileToSave()
         {
             Microsoft.Win32.SaveFileDialog saveFileDialog = new();

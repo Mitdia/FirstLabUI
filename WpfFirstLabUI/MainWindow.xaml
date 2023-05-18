@@ -28,15 +28,15 @@
                 <TextBlock Text="Spline data item:"/>
                 <TextBlock>
                     <Run Text="- coordinate: "/>
-                    <Run Text="{Binding Path=PointCoordinate, Converter={StaticResource DoubleToStringConverter}}"/>
+                    <Run Text="{Binding PointCoordinate, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
                 <TextBlock>
                     <Run Text="- spline value: "/>
-                    <Run Text="{Binding Path=SplineValue, Converter={StaticResource DoubleToStringConverter}}"/>
+                    <Run Text="{Binding SplineValue, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
                 <TextBlock>
                     <Run Text="- first derivative value: "/>
-                    <Run Text="{Binding Path=FirstDerivativeValue, Converter={StaticResource DoubleToStringConverter}}"/>
+                    <Run Text="{Binding FirstDerivativeValue, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -45,11 +45,11 @@
                 <TextBlock Text="Raw data item:"/>
                 <TextBlock>
                     <Run Text="- coordinate: "/>
-                    <Run Text="{Binding Path=Coordinate, Converter={StaticResource DoubleToStringConverter}}"/>
+                    <Run Text="{Binding Coordinate, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
                 <TextBlock>
                     <Run Text="- force value: "/>
-                    <Run Text="{Binding Path=Force, Converter={StaticResource DoubleToStringConverter}}"/>
+                    <Run Text="{Binding Force, Converter={StaticResource DoubleToStringConverter}}"/>
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -73,7 +73,7 @@
             <TextBox x:Name="segmentEndsInput"
                      HorizontalAlignment="Center" VerticalAlignment="Top" 
                      Grid.Row="1" Margin="110,50,0,0" TextWrapping="Wrap" 
-                     Text="{Binding Path=SegmentEnds,
+                     Text="{Binding SegmentEnds,
                                     Converter={StaticResource StringToDoubleArrayConverter},
                                     ValidatesOnDataErrors=True,
                                     NotifyOnValidationError=True,
@@ -84,7 +84,7 @@
             <TextBox x:Name="numberOfInitialPointsInput"
                      HorizontalAlignment="Center" VerticalAlignment="Top" 
                      Grid.Row="1" Margin="40,80,0,0" TextWrapping="Wrap"
-                     Text="{Binding Path=NumberOfInitialPoints,
+                     Text="{Binding NumberOfInitialPoints,
                                     Converter={StaticResource IsNumericConverter},
                                     ValidatesOnDataErrors=True,
                                     NotifyOnValidationError=True,
@@ -93,14 +93,14 @@
                      Width="30" Height="20"/>
 
             <RadioButton x:Name="isUniformButton" Content="Uniform Grid"
-                         IsChecked="{Binding Path=IsGridUniform}"
+                         IsChecked="{Binding IsGridUniform}"
                          HorizontalAlignment="Left" VerticalAlignment="Top"
                          Grid.Row="1" Margin="90,120,0,0" 
                          Width="90" Height="20"/>
 
             <RadioButton x:Name="isNonuniformButton"
                          Content="Nonuniform Grid" 
-                         IsChecked="{Binding Path=IsGridUniform,
+                         IsChecked="{Binding IsGridUniform,
                                              Converter={StaticResource IsNonuniformToBoolConverter},
                                              Mode=TwoWay}"
                          HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -108,7 +108,7 @@
                          Height="20" Width="110"/>
 
             <ComboBox x:Name="forceInput"
-                      SelectedItem="{Binding Path=ForceName}"
+                      SelectedItem="{Binding ForceName}"
                       ItemsSource="{Binding ForceTypes}"
                       HorizontalAlignment="Center" VerticalAlignment="Top"
                       Grid.Row="1" Margin="0,160,0,0" 
@@ -117,7 +117,7 @@
             <TextBox x:Name="numberOfSplinePointsInput"
                      HorizontalAlignment="Left" VerticalAlignment="Top"
                      Margin="220,70,0,0" TextWrapping="Wrap"
-                     Text="{Binding Path=NumberOfPoints,
+                     Text="{Binding NumberOfPoints,
                                     Converter={StaticResource IsNumericConverter},
                                     ValidatesOnDataErrors=True, 
                                     NotifyOnValidationError=True, 
@@ -129,12 +129,12 @@
                      HorizontalAlignment="Left" VerticalAlignment="Top"
                      Margin="130,112,0,0"  TextWrapping="Wrap" 
                      Width="30" Height="20"
-                     Text="{Binding Path=FirstDerivativeOnLeftSegmentEnd}"/>
+                     Text="{Binding FirstDerivativeOnLeftSegmentEnd}"/>
 
             <TextBox x:Name="derivativeOnRightSide"
                      HorizontalAlignment="Left" Margin="305,112,0,0"  TextWrapping="Wrap" VerticalAlignment="Top"
                      Width="30" Height="20"
-                     Text="{Binding Path=FirstDerivativeOnRightSegmentEnd}"/>
+                     Text="{Binding FirstDerivativeOnRightSegmentEnd}"/>
 
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top"
                        Margin="0,30,0,0"  TextWrapping="Wrap"  
@@ -186,7 +186,7 @@
                  HorizontalAlignment="Left" VerticalAlignment="Top" 
                  Width="205" Height="160" 
                  ItemTemplate="{StaticResource splineDataItemTemplate}"
-                 ItemsSource="{Binding Path=SplineValues}"/>
+                 ItemsSource="{Binding SplineValues}"/>
 
         <TextBlock Grid.Column="1" Grid.Row="1" Margin="170,245,0,0" 
                    TextWrapping="Wrap" 
@@ -201,7 +201,7 @@
                    TextWrapping="Wrap" 
                    Width="126" Height="20" >
             <Run Text="Integral value:"/>
-            <Run Text="{Binding Path=IntegralValue, Converter={StaticResource DoubleToStringConverter}}"/>
+            <Run Text="{Binding IntegralValue, Converter={StaticResource DoubleToStringConverter}}"/>
         </TextBlock>
 
         <lvc:CartesianChart x:Name="chart" Grid.Column="2" Margin="25,39,25,30" Grid.Row="1"></lvc:CartesianChart>
