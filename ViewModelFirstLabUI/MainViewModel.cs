@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Input;
 using ClassLibraryUI;
 using LiveCharts;
@@ -11,7 +10,7 @@ namespace ViewModelFirstLabUI;
 
 public interface IUIServices
 {
-    // void ReportError(string message);
+    void ReportError(string message);
     void PlotLineSeries(LineSeries series);
     void PlotScatterSeries(ScatterSeries series);
 
@@ -90,7 +89,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         }
         catch (Exception ex)
         {
-            // MessageBox.Show(ex.Message);
+            uiServices.ReportError(ex.Message);
         }
     }
 
@@ -118,7 +117,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             }
             catch (Exception ex)
             {
-                // MessageBox.Show($"Load failed because: {ex.Message}");
+                uiServices.ReportError($"Load failed because: {ex.Message}");
             }
             try
             {
@@ -127,7 +126,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             }
             catch (Exception ex)
             {
-                // MessageBox.Show($"Interpolation failed because: {ex.Message}");
+                uiServices.ReportError($"Interpolation failed because: {ex.Message}");
             }
         }
 
@@ -150,7 +149,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             }
             catch (Exception ex)
             {
-                // MessageBox.Show($"Save failed because: {ex.Message}");
+                uiServices.ReportError($"Save failed because: {ex.Message}");
             }
         }
 
@@ -188,7 +187,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         RawDataSource.ComputeRawData();
         if (RawDataSource.RawDataItems == null)
         {
-            // MessageBox.Show("Error! Computation of a RawData failed.");
+            uiServices.ReportError("Error! Computation of a RawData failed.");
             throw new Exception("Raw Data field is null or field Values haven't been initialized correctly");
         }
         ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
@@ -206,7 +205,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         string? errorMessage = null;
         if (RawDataSource == null)
         {
-            // MessageBox.Show("You should build a Raw Data object before interpolation!");
+            uiServices.ReportError("You should build a Raw Data object before interpolation!");
             throw new Exception("Raw Data object is null!");
         }
         SplineDataOutput = new SplineData(RawDataSource, FirstDerivativeOnLeftSegmentEnd, FirstDerivativeOnRightSegmentEnd, NumberOfPoints);
@@ -220,7 +219,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         }
         if (errorMessage != null || SplineDataOutput == null || SplineDataOutput.SplineDataItems == null)
         {
-            // MessageBox.Show("Interpolation failed!\n" + errorMessage);
+            uiServices.ReportError("Interpolation failed!\n" + errorMessage);
             throw new Exception("Either Spline Data or Spline Data Items is null");
         }
         SplineValues = new ObservableCollection<SplineDataItem>(SplineDataOutput.SplineDataItems);

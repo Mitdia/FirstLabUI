@@ -175,6 +175,10 @@ namespace WpfFirstLabUI
             });
         }
 
+        public void ReportError(string message)
+        {
+            MessageBox.Show(message);
+        }
         public void PlotScatterSeries(ScatterSeries series)
         {
             chart.Series.Add(series);
