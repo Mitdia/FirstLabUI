@@ -41,7 +41,10 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
     public int NumberOfPoints { get; set; }
     public double FirstDerivativeOnLeftSegmentEnd { get; set; }
     public double FirstDerivativeOnRightSegmentEnd { get; set; }
-    public ObservableCollection<RawDataItem>? ForceValues { get; set; }
+    public ObservableCollection<RawDataItem>? ForceValues 
+    {
+        get => RawDataSource != null && RawDataSource.RawDataItems != null? new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems) : null;
+    }
     public ObservableCollection<SplineDataItem>? SplineValues { get; set; }
     public Array ForceTypes { get; set; }
 
@@ -78,8 +81,14 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
     {
         try
         {
-            ComputeRawData();
+            RawDataSource.ComputeRawData();
             NotifyPropertyChanged(nameof(ForceValues));
+            if (RawDataSource.Points == null || RawDataSource.ForceValues == null)
+            {
+                uiServices.ReportError("Error! Computation of a RawData failed.");
+                throw new Exception("Raw Data field is null or field Values haven't been initialized correctly");
+            }
+            uiServices.Plot(RawDataSource.Points, RawDataSource.ForceValues, "raw");
             Interpolate();
             NotifyPropertyChanged(nameof(SplineValues));
         }
@@ -88,14 +97,12 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             uiServices.ReportError(ex.Message);
         }
     }
-
     private bool CanExecuteFromData(object sender)
     {
         return string.IsNullOrEmpty(this[nameof(SegmentEnds)]) 
             && string.IsNullOrEmpty(this[nameof(NumberOfInitialPoints)]) 
             && string.IsNullOrEmpty(this[nameof(NumberOfPoints)]);
     }
-
     private void ExecuteFromFile(object sender)
     {
         string? filename = uiServices.ChooseFileToOpen();
@@ -128,12 +135,10 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
 
 
     }
-
     private bool CanExecuteFromFile(object sender)
     {
         return string.IsNullOrEmpty(this[nameof(NumberOfPoints)]);
     }
-
     private void SaveToFile(object sender)
     {
         string? filename = uiServices.ChooseFileToSave();
@@ -150,7 +155,6 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         }
 
     }
-
     private bool CanSaveToFile(object sender)
     {
         return string.IsNullOrEmpty(this[nameof(SegmentEnds)])
@@ -158,8 +162,6 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             && string.IsNullOrEmpty(this[nameof(NumberOfPoints)]) 
             && ForceValues != null;
     }
-
-
     public string Error => this[string.Empty];
     private RawData RawDataSource { get; set; }
     private SplineData? SplineDataOutput { get; set; }
@@ -176,18 +178,6 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         ExecuteFromFileCommand = new RelayCommand(ExecuteFromFile, CanExecuteFromFile);
         SaveCommand = new RelayCommand(SaveToFile, CanSaveToFile);
 
-    }
-    public void ComputeRawData()
-    {
-
-        RawDataSource.ComputeRawData();
-        if (RawDataSource.RawDataItems == null)
-        {
-            uiServices.ReportError("Error! Computation of a RawData failed.");
-            throw new Exception("Raw Data field is null or field Values haven't been initialized correctly");
-        }
-        ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
-        uiServices.Plot(RawDataSource.Points, RawDataSource.ForceValues, "raw");
     }
     public void Interpolate()
     {
@@ -233,6 +223,6 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         {
             throw new Exception("The loaded raw data has no Force Values array");
         }
-        ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
+        // ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
     }
  }
