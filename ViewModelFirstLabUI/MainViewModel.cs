@@ -124,7 +124,11 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         {
             try
             {
-                Load(filename);
+                RawDataSource = new RawData(filename);
+                if (RawDataSource.RawDataItems == null)
+                {
+                    throw new Exception("The loaded raw data has no Force Values array");
+                }
                 NotifyPropertyChanged("ForceName");
                 NotifyPropertyChanged("SegmentEnds");
                 NotifyPropertyChanged("NumberOfInitialPoints");
@@ -173,7 +177,11 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         {
             try
             {
-                Save(filename);
+                if (RawDataSource == null)
+                {
+                    throw new Exception("You should create a raw data object before saving");
+                }
+                RawDataSource.Save(filename);
             }
             catch (Exception ex)
             {
@@ -205,21 +213,5 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         ExecuteFromFileCommand = new RelayCommand(ExecuteFromFile, CanExecuteFromFile);
         SaveCommand = new RelayCommand(SaveToFile, CanSaveToFile);
 
-    }
-    public void Save(string filename)
-    {
-        if (RawDataSource == null)
-        {
-            throw new Exception("You should create a raw data object before saving");
-        }
-        RawDataSource.Save(filename);
-    }
-    public void Load(string filename)
-    {
-        RawDataSource = new RawData(filename);
-        if (RawDataSource.RawDataItems == null)
-        {
-            throw new Exception("The loaded raw data has no Force Values array");
-        }
     }
  }
