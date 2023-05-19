@@ -43,11 +43,15 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
     public double FirstDerivativeOnRightSegmentEnd { get; set; }
     public ObservableCollection<RawDataItem>? ForceValues 
     {
-        get => RawDataSource != null && RawDataSource.RawDataItems != null? new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems) : null;
+        get => RawDataSource != null && RawDataSource.RawDataItems != null?
+            new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems) : null;
     }
-    public ObservableCollection<SplineDataItem>? SplineValues { get; set; }
+    public ObservableCollection<SplineDataItem>? SplineValues 
+    { 
+        get => SplineDataOutput != null && SplineDataOutput.SplineDataItems != null?
+            new ObservableCollection<SplineDataItem>(SplineDataOutput.SplineDataItems) : null;
+    }
     public Array ForceTypes { get; set; }
-
     public double? IntegralValue
     {
         get => SplineDataOutput?.IntegralValue;
@@ -85,12 +89,22 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             NotifyPropertyChanged(nameof(ForceValues));
             if (RawDataSource.Points == null || RawDataSource.ForceValues == null)
             {
-                uiServices.ReportError("Error! Computation of a RawData failed.");
                 throw new Exception("Raw Data field is null or field Values haven't been initialized correctly");
             }
             uiServices.Plot(RawDataSource.Points, RawDataSource.ForceValues, "raw");
-            Interpolate();
+            SplineDataOutput = new SplineData(RawDataSource, FirstDerivativeOnLeftSegmentEnd, FirstDerivativeOnRightSegmentEnd, NumberOfPoints);
+            SplineDataOutput.BuildSpline();
             NotifyPropertyChanged(nameof(SplineValues));
+            if (SplineDataOutput.SplineDataItems == null)
+            {
+                throw new Exception("SplineDataItems property is null");
+            }
+            NotifyPropertyChanged("IntegralValue");
+            uiServices.Plot(SplineDataOutput.SplineDataItems.Select(point => point.PointCoordinate).ToArray(),
+                            SplineDataOutput.SplineDataItems.Select(point => point.SplineValue).ToArray(),
+                            "spline");
+
+            
         }
         catch (Exception ex)
         {
@@ -124,8 +138,21 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             }
             try
             {
-                Interpolate();
+                if (RawDataSource == null)
+                {
+                    throw new Exception("Raw Data object is null!");
+                }
+                SplineDataOutput = new SplineData(RawDataSource, FirstDerivativeOnLeftSegmentEnd, FirstDerivativeOnRightSegmentEnd, NumberOfPoints);
+                SplineDataOutput.BuildSpline();
                 NotifyPropertyChanged("SplineValues");
+                if (SplineDataOutput.SplineDataItems == null)
+                {
+                    throw new Exception("SplineDataItems property is null");
+                }
+                NotifyPropertyChanged("IntegralValue");
+                uiServices.Plot(SplineDataOutput.SplineDataItems.Select(point => point.PointCoordinate).ToArray(),
+                                SplineDataOutput.SplineDataItems.Select(point => point.SplineValue).ToArray(),
+                                "spline");
             }
             catch (Exception ex)
             {
@@ -179,35 +206,6 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         SaveCommand = new RelayCommand(SaveToFile, CanSaveToFile);
 
     }
-    public void Interpolate()
-    {
-        string? errorMessage = null;
-        if (RawDataSource == null)
-        {
-            uiServices.ReportError("You should build a Raw Data object before interpolation!");
-            throw new Exception("Raw Data object is null!");
-        }
-        SplineDataOutput = new SplineData(RawDataSource, FirstDerivativeOnLeftSegmentEnd, FirstDerivativeOnRightSegmentEnd, NumberOfPoints);
-        try
-        {
-            SplineDataOutput.BuildSpline();
-        }
-        catch (Exception ex)
-        {
-            errorMessage = ex.Message;
-        }
-        if (errorMessage != null || SplineDataOutput == null || SplineDataOutput.SplineDataItems == null)
-        {
-            uiServices.ReportError("Interpolation failed!\n" + errorMessage);
-            throw new Exception("Either Spline Data or Spline Data Items is null");
-        }
-        SplineValues = new ObservableCollection<SplineDataItem>(SplineDataOutput.SplineDataItems);
-        NotifyPropertyChanged("IntegralValue");
-        uiServices.Plot(SplineDataOutput.SplineDataItems.Select(point => point.PointCoordinate).ToArray(),
-                        SplineDataOutput.SplineDataItems.Select(point => point.SplineValue).ToArray(),
-                        "spline");
-                        
-    }
     public void Save(string filename)
     {
         if (RawDataSource == null)
@@ -223,6 +221,5 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         {
             throw new Exception("The loaded raw data has no Force Values array");
         }
-        // ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
     }
  }
