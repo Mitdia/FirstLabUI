@@ -2,17 +2,13 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using ClassLibraryUI;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
 
 namespace ViewModelFirstLabUI;
 
 public interface IUIServices
 {
     void ReportError(string message);
-    void PlotLineSeries(LineSeries series);
-    void PlotScatterSeries(ScatterSeries series);
+    void Plot(double[] coordinate, double[] forceValues, string plotType);
 
     string? ChooseFileToOpen();
     string? ChooseFileToSave();
@@ -191,14 +187,7 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
             throw new Exception("Raw Data field is null or field Values haven't been initialized correctly");
         }
         ForceValues = new ObservableCollection<RawDataItem>(RawDataSource.RawDataItems);
-        ChartValues<ObservablePoint> scatterPlotValues = new ChartValues<ObservablePoint>();
-        foreach (RawDataItem rawDataItem in RawDataSource.RawDataItems)
-        {
-            scatterPlotValues.Add(new ObservablePoint(rawDataItem.Coordinate, rawDataItem.Force));
-        }
-
-        var plot = new ScatterSeries { Title = "Raw Data", Values = scatterPlotValues }; 
-        uiServices.PlotScatterSeries(plot);
+        uiServices.Plot(RawDataSource.Points, RawDataSource.ForceValues, "raw");
     }
     public void Interpolate()
     {
@@ -224,14 +213,10 @@ public class MainViewModel : ViewModelBase, IDataErrorInfo
         }
         SplineValues = new ObservableCollection<SplineDataItem>(SplineDataOutput.SplineDataItems);
         NotifyPropertyChanged("IntegralValue");
-        ChartValues<ObservablePoint> linePlotValues = new ChartValues<ObservablePoint>();
-        foreach (var splineDataItem in SplineDataOutput.SplineDataItems)
-        {
-            linePlotValues.Add(new ObservablePoint(splineDataItem.PointCoordinate, splineDataItem.SplineValue));
-        }
-
-        var line = new LineSeries { Title = "Interpolated Data", Values = linePlotValues };
-        uiServices.PlotLineSeries(line);
+        uiServices.Plot(SplineDataOutput.SplineDataItems.Select(point => point.PointCoordinate).ToArray(),
+                        SplineDataOutput.SplineDataItems.Select(point => point.SplineValue).ToArray(),
+                        "spline");
+                        
     }
     public void Save(string filename)
     {

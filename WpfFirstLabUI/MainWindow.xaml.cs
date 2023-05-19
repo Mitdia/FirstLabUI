@@ -6,6 +6,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using ViewModelFirstLabUI;
 using LiveCharts.Wpf;
+using LiveCharts.Defaults;
+using LiveCharts;
+using System.Linq;
+
 namespace WpfFirstLabUI
 {
     public class StringToDoubleArrayConverter : IValueConverter
@@ -179,9 +183,28 @@ namespace WpfFirstLabUI
         {
             MessageBox.Show(message);
         }
-        public void PlotScatterSeries(ScatterSeries series)
+        public void Plot(double[] coordinates, double[] forceValues, string plotType)
         {
-            chart.Series.Add(series);
+            ChartValues<ObservablePoint> plotPoints= new ChartValues<ObservablePoint>();
+            foreach (var point in coordinates.Zip(forceValues))
+            {
+                plotPoints.Add(new ObservablePoint(point.First, point.Second));
+            }
+            if (plotType == "raw")
+            {
+                var plot = new ScatterSeries { Title = "Raw Data", Values = plotPoints };
+                chart.Series.Add(plot);
+            }
+            else if (plotType == "spline")
+            {
+                var plot = new LineSeries { Title = "Interpolated Data", Values = plotPoints};
+                chart.Series.Add(plot);
+            }
+            else
+            {
+                MessageBox.Show("Unknown plot type!");
+                return;
+            }
         }
 
         public void PlotLineSeries(LineSeries series)
